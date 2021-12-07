@@ -1,0 +1,14 @@
+.car-details {
+  background-color: black;
+  height: 150px;
+  width: 100%;
+}
+
+/* .carousel .carousel-control-prev,
+.carousel .carousel-control-next {
+  opacity: 0.2;
+} */
+
+.car-img {
+  height: 350px;
+}
