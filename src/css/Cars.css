@@ -3,13 +3,13 @@
   width: 100%;
 }
 
-/* .carousel .carousel-control-prev,
+.carousel .carousel-control-prev,
 .carousel .carousel-control-next {
-  opacity: 0.2;
-} */
+  margin: 1em 0 7em 0;
+}
 
 .car-img {
-  height: 350px;
+  height: 50vh;
 }
 
 .cars-container {
