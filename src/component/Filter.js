@@ -3,7 +3,7 @@ import React from 'react';
 const Filter = () => {
 
   return (
-    <div className='border py-4'>
+    <div className='py-4'>
       {/* <form>
         <input type='dropdown' />
       </form> */}

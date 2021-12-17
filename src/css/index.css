@@ -7,3 +7,16 @@
   -o-background-size: cover;
   background-size: cover;
 }
+
+.bg-red {
+  background-color: #ec6132;
+}
+
+.shadow {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(236, 97, 50, 0.6) !important;
+}
+
+a {
+  color: #ec6132;
+  text-decoration: none;
+}
