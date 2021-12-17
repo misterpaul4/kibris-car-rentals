@@ -8,7 +8,9 @@ function App() {
     <div className="App">
       <Header />
       <Filter />
-       <Cars />
+      <div className='d-flex justify-content-center'>
+        <Cars />
+      </div>
     </div>
   );
 }

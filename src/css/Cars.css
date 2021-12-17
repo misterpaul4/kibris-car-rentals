@@ -1,6 +1,5 @@
 .car-details {
-  background-color: black;
-  height: 150px;
+  background-color: white;
   width: 100%;
 }
 
@@ -11,4 +10,9 @@
 
 .car-img {
   height: 350px;
+}
+
+.cars-container {
+  width: 100%;
+  max-width: 576px;
 }

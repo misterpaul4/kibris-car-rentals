@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
 import Carousel from 'react-bootstrap/Carousel'
+import tempCarImg from '../img/temp_car.jpg';
+import { moneyWithCommas } from '../utils/util';
+import FvIcon from './FavIcon';
 import '../css/Cars.css';
 
 const dummyUsers = [
@@ -24,12 +27,12 @@ const dummyCars = [
     "rental_company": "Britico",
     "status": "available",
     "manufacturer": "Lamboghini",
-    "model": null,
+    "model": 'Urus',
     "image_url": null
   },
   {
     "id": 2,
-    "three_day_rental_price": 100,
+    "three_day_rental_price": 900,
     "one_week_rental_price": 300,
     "one_month_rental_price": 2000,
     "delivery": 'yes',
@@ -39,12 +42,12 @@ const dummyCars = [
     "rental_company": "Durmazz",
     "status": "available",
     "manufacturer": "Benz",
-    "model": null,
+    "model": 'S-Class',
     "image_url": null
   },
   {
     "id": 3,
-    "three_day_rental_price": 150,
+    "three_day_rental_price": 300,
     "one_week_rental_price": 400,
     "one_month_rental_price": 3000,
     "delivery": 'yes',
@@ -54,12 +57,12 @@ const dummyCars = [
     "rental_company": "KibTek",
     "status": "rented",
     "manufacturer": "BMW",
-    "model": null,
+    "model": '7 Series',
     "image_url": null
 },
 {
   "id": 4,
-  "three_day_rental_price": 150,
+  "three_day_rental_price": 800,
   "one_week_rental_price": 400,
   "one_month_rental_price": 3000,
   "delivery": 'yes',
@@ -69,12 +72,12 @@ const dummyCars = [
   "rental_company": "KibTek",
   "status": "rented",
   "manufacturer": "Porsche",
-  "model": null,
+  "model": 'Taycan',
   "image_url": null
 },
 {
   "id": 5,
-  "three_day_rental_price": 150,
+  "three_day_rental_price": 1150,
   "one_week_rental_price": 400,
   "one_month_rental_price": 3000,
   "delivery": 'yes',
@@ -84,7 +87,7 @@ const dummyCars = [
   "rental_company": "KibTek",
   "status": "rented",
   "manufacturer": "Jaguar",
-  "model": null,
+  "model": 'XF',
   "image_url": null
 },
 ]
@@ -92,37 +95,43 @@ const dummyCars = [
 const Cars = () => {
   const [currentCarIndex, updateCarIndex] = useState(1);
 
-  const randColor = () => {
-    return ("#" + Math.floor(Math.random()*16777215).toString(16));
-  }
-
   const AttachCars = (car, index) => {
     return (
       <Carousel.Item className='border' key={index}>
         {/* image */}
-        <div className='car-img' style={
-          {
-            background: randColor()
-          }
-        }>
+        <div className='car-img bg-img' style={{backgroundImage: `url(${tempCarImg})`}}>
         </div>
 
         {/* info */}
-        <div className='car-details text-light'>
+        <div className='car-details p-3 text-dark'>
+          <div className='d-flex justify-content-between'>
+            <div>{car.manufacturer}, {car.model}</div>
+            <div>₺ {moneyWithCommas(car.three_day_rental_price)}</div>
+          </div>
+
+          <div className='d-flex justify-content-between align-items-end mt-3'>
+            <div>
+              <FvIcon />
+            </div>
+
+            <div>
+                3 days rental
+              </div>
+          </div>
         </div>
      </Carousel.Item> 
     )
   }
 
   return (
-    <div>
+    <div className='cars-container'>
       <Carousel interval={null} indicators={false} className='p-3' onSlide={index => {
         updateCarIndex(index + 1);
       }}>
         {dummyCars.map(AttachCars)}
       </Carousel>
 
-      <div className='text-center'>
+      <div className='text-center m-3'>
         {currentCarIndex} / {dummyCars.length}
       </div>
     </div>
