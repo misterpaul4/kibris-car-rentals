@@ -5,7 +5,7 @@ import '../css/Favourite.css';
 
 const FavIcon = () => {
   return (
-    <img src={unfavouritedIcon} className='fv-icon'></img>
+    <img src={unfavouritedIcon} className='fv-icon' alt='favourite icon'></img>
   );
 }
 

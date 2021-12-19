@@ -6,7 +6,7 @@ import '../css/Header.css';
 const Header = () => {
 
   return (
-  <header className='p-2 border bg-light'>
+  <header className='p-2'>
     <div className='d-flex justify-content-between align-items-center px-3'>
       <img src={menuIcon} alt='menu icon'></img>
 

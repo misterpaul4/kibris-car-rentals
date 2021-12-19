@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { Link } from 'react-router-dom';
 import Carousel from 'react-bootstrap/Carousel'
 import tempCarImg from '../img/temp_car.jpg';
 import { moneyWithCommas } from '../utils/util';
@@ -17,6 +18,7 @@ const dummyUsers = [
 const dummyCars = [
   {
     "id": 1,
+    "daily_rental_price": 100,
     "three_day_rental_price": 300,
     "one_week_rental_price": 800,
     "one_month_rental_price": 6000,
@@ -32,6 +34,7 @@ const dummyCars = [
   },
   {
     "id": 2,
+    "daily_rental_price": 200,
     "three_day_rental_price": 900,
     "one_week_rental_price": 300,
     "one_month_rental_price": 2000,
@@ -47,6 +50,7 @@ const dummyCars = [
   },
   {
     "id": 3,
+    "daily_rental_price": 90,
     "three_day_rental_price": 300,
     "one_week_rental_price": 400,
     "one_month_rental_price": 3000,
@@ -62,6 +66,7 @@ const dummyCars = [
 },
 {
   "id": 4,
+  "daily_rental_price": 190,
   "three_day_rental_price": 800,
   "one_week_rental_price": 400,
   "one_month_rental_price": 3000,
@@ -77,6 +82,7 @@ const dummyCars = [
 },
 {
   "id": 5,
+  "daily_rental_price": 300,
   "three_day_rental_price": 1150,
   "one_week_rental_price": 400,
   "one_month_rental_price": 3000,
@@ -99,14 +105,18 @@ const Cars = () => {
     return (
       <Carousel.Item className='border' key={index}>
         {/* image */}
-        <div className='car-img bg-img' style={{backgroundImage: `url(${tempCarImg})`}}>
-        </div>
+        <Link to={`/cars/${car.id}`}>
+          <div className='car-img bg-img' style={{backgroundImage: `url(${tempCarImg})`}}>
+          </div>
+        </Link>
 
         {/* info */}
         <div className='car-details p-3 text-dark'>
           <div className='d-flex justify-content-between'>
             <div>{car.manufacturer}, {car.model}</div>
-            <div>₺ {moneyWithCommas(car.three_day_rental_price)}</div>
+            <div className='car-details-pricing'>₺ {moneyWithCommas(car.daily_rental_price)}
+              <br></br><small><em>per day</em></small>
+            </div>
           </div>
 
           <div className='d-flex justify-content-between align-items-end mt-3'>
@@ -114,9 +124,9 @@ const Cars = () => {
               <FvIcon />
             </div>
 
-            <div>
-                3 days rental
-              </div>
+            <div className={car.status === 'rented' ? 'cl-red' : null}>
+                {car.status}
+            </div>
           </div>
         </div>
      </Carousel.Item> 
