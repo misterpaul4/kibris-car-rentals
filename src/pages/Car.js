@@ -27,7 +27,7 @@ const Car = () => {
   return (
     <div className='car-page-container d-flex flex-column justify-content-between'>
       <div className='car-page--child-container'>
-        <Header />
+        <Header heading={tempCarObj.rental_company} />
         <div className='d-flex flex-column align-items-center car-page'>
           {/* car image */}
           <div className='car-img bg-img' style={{backgroundImage: `url(${tempCar})`}}>

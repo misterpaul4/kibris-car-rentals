@@ -68,28 +68,28 @@ const dummyCars = [
   "model": 'Taycan',
   "image_url": null
 },
-{
-  "id": 5,
-  "daily_rental_price": 300,
-  "three_day_rental_price": 1150,
-  "one_week_rental_price": 400,
-  "one_month_rental_price": 3000,
-  "delivery": 'yes',
-  "fuel_type": 'diesel',
-  "rental_requirements": null,
-  "terms_and_conditions": null,
-  "rental_company": "KibTek",
-  "status": "rented",
-  "manufacturer": "Jaguar",
-  "model": 'XF',
-  "image_url": null
-},
+// {
+//   "id": 5,
+//   "daily_rental_price": 300,
+//   "three_day_rental_price": 1150,
+//   "one_week_rental_price": 400,
+//   "one_month_rental_price": 3000,
+//   "delivery": 'yes',
+//   "fuel_type": 'diesel',
+//   "rental_requirements": null,
+//   "terms_and_conditions": null,
+//   "rental_company": "KibTek",
+//   "status": "rented",
+//   "manufacturer": "Jaguar",
+//   "model": 'XF',
+//   "image_url": null
+// },
 ]
 
 function App() {
   return (
     <div className="App">
-      <Header heading={'Cars'} />
+      <Header heading={'Favourites'} />
       <Filter />
       <div className='d-flex justify-content-center'>
         <Cars carsArr={dummyCars} />
