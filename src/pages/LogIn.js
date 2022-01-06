@@ -9,7 +9,7 @@ const LogIn = () => {
         <h1>Log In</h1>
         <p>Hello there, log in and start renting cars <span>&#128515;</span></p>
         <form>
-          <input type='text' className='rounded-pill mt-4' placeholder='username' /><br></br>
+          <input type='text' className='rounded-pill mt-4 authInput' placeholder='username' /><br></br>
           <input type='submit' value='Log In' className='rounded-pill my-3 bg-red shadow' />
         </form>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import favouritedIcon from '../img/favourited.svg';
+// import favouritedIcon from '../img/favourited.svg';
 import unfavouritedIcon from '../img/unfavourited.svg';
 import '../css/Favourite.css';
 
