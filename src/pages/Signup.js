@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { login, logout } from '../actions'
 import '../css/Authentication.css';
 import { HOST } from '../utils/var';
 const Signup = () => {
@@ -78,4 +80,18 @@ const Signup = () => {
   );
 }
 
-export default Signup;
+const mapStateToProps = state => ({
+  auth: state.loggedIn,
+});
+
+const mapDispatchToProps = dispatch => ({
+  loginUser: status => {
+    dispatch(login(status));
+  },
+  logoutUser: status => {
+    dispatch(logout(status));
+  },
+});
+
+// export default Signup;
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

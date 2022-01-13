@@ -10,7 +10,10 @@ import './css/index.css';
 const store = createStore(
   rootReducer,
   {
-    auth: { token: "" },
+    auth: {
+      loggedIn: false,
+      token: ''
+    },
   },
 );
 
