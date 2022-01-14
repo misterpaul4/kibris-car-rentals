@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { login } from '../actions'
 import { HOST } from '../utils/var';
 
 import '../css/Authentication.css';
 const LogIn = ({
-  loggedIn: auth,
   loginUser,
 }) => {
   const [userUsername, updateUsername] = useState('');
   const [userPassword, updatePassword] = useState('');
-
-  console.log('auth object', auth);
+  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,16 +30,16 @@ const LogIn = ({
     }).then(response => {
       if (response.status.toString() === '200') {
         response.json().then(data => {
-          loginUser(data.token)
+          loginUser(data.token);
+          console.log('login successful'); // alert
+          history.push("/");
         })
       } else {
-        console.log('incorrect username or password');
+        console.log('incorrect username or password'); // alert
       }
     }).catch(function(error) {
-      console.log('Looks like there was a problem: ', error);
+      console.log('Looks like there was a problem: ', error); // alert
     });
-
-    // console.log('is user loggined in NOW?', auth.loggedIn);
   };
 
   return (

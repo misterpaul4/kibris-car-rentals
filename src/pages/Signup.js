@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { login, logout } from '../actions'
+import { login } from '../actions'
 import '../css/Authentication.css';
 import { HOST } from '../utils/var';
-const Signup = () => {
+const Signup = ({
+  loginUser,
+}) => {
 
   const [userUsername, updateUsername] = useState('');
   const [userPassword, updatePassword] = useState('');
   const [userRole, updateRole] = useState('user');
+
+  const history = useHistory();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,13 +32,18 @@ const Signup = () => {
         Accept: 'application/json',
       },
       body: JSON.stringify(credentials),
-    }).then(response => response.json())
-    .then(data => {
-      // successful
-      console.log('data sent', data);
+    }).then(response => {
+      if (response.status.toString() === '201') {
+        response.json().then(data => {
+          loginUser(data.token);
+          console.log('signup successful'); // alert successfull
+          history.push("/");
+        })
+      } else {
+        console.log('Looks like there was a problem'); // alert
+      }
     }).catch(function(error) {
-      // unsuccessful
-      console.log('Looks like there was a problem: ', error);
+      console.log('Looks like there was a problem: ', error); // alert
     });
   };
 
@@ -47,23 +57,26 @@ const Signup = () => {
           
           <div className='mt-3'>
           <small><em>How do you intend to use this application?</em></small><br></br>
-          <input
-            type="radio"
-            value="user"
-            className='m-2'
-            checked={userRole === 'user'}
-            onChange={e => updateRole(e.target.value)}
-          />
-          <label>I am renting</label>
-
-          <input
-            type="radio"
-            value="admin"
-            className='m-2'
-            checked={userRole === 'admin'}
-            onChange={e => updateRole(e.target.value)}
-          />
-          <label>I am a registered rental company</label>
+          <div>
+            <input
+              type="radio"
+              value="user"
+              className='m-2'
+              checked={userRole === 'user'}
+              onChange={e => updateRole(e.target.value)}
+            />
+            <label>I am renting</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              value="admin"
+              className='m-2'
+              checked={userRole === 'admin'}
+              onChange={e => updateRole(e.target.value)}
+            />
+            <label>I am a registered rental company</label>
+          </div>
           </div>
 
 
@@ -80,18 +93,10 @@ const Signup = () => {
   );
 }
 
-const mapStateToProps = state => ({
-  auth: state.loggedIn,
-});
-
 const mapDispatchToProps = dispatch => ({
   loginUser: status => {
     dispatch(login(status));
   },
-  logoutUser: status => {
-    dispatch(logout(status));
-  },
 });
 
-// export default Signup;
-export default connect(mapStateToProps, mapDispatchToProps)(Signup);
+export default connect(null, mapDispatchToProps)(Signup);
