@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { login } from '../actions'
 import '../css/Authentication.css';
 import { HOST } from '../utils/var';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
+
 const Signup = ({
   loginUser,
 }) => {
@@ -49,12 +52,13 @@ const Signup = ({
 
   return (
     <div className='auth-container container-fluid text-center bg-img'>
-      <div className='container rounded py-5 auth'>
+      <div className='rounded py-5 auth'>
         <h1>Create An Account</h1>
         <form>
-          <input type='text' className='rounded-pill mt-4 authInput' value={userUsername} onChange={(e) => updateUsername(e.target.value)} placeholder='username' /><br></br>
-          <input type='password' className='rounded-pill mt-4 authInput' value={userPassword} onChange={(e) => updatePassword(e.target.value)} placeholder='password' /><br></br>
-          
+          <input type='text' className='rounded mt-2 authInput' value={userUsername} onChange={(e) => updateUsername(e.target.value)} placeholder='username' /><br></br>
+          <span className='validation-message'><FontAwesomeIcon icon={faExclamationCircle} /> validation message</span><br></br>
+          <input type='password' className='rounded mt-2 authInput' value={userPassword} onChange={(e) => updatePassword(e.target.value)} placeholder='password' /><br></br>
+          <span className='validation-message'><FontAwesomeIcon icon={faExclamationCircle} /> validation message</span><br></br>
           <div className='mt-3'>
           <small><em>How do you intend to use this application?</em></small><br></br>
           <div>
@@ -80,7 +84,7 @@ const Signup = ({
           </div>
 
 
-          <input type='submit' onClick={handleSubmit} value='Sign up' className='rounded-pill my-3 bg-red shadow' />
+          <input type='submit' onClick={handleSubmit} value='Sign up' className='rounded my-3 bg-red shadow' />
         </form>
 
         <div className='mt-5'>

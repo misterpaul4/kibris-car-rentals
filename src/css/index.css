@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish&display=swap');
+
+body {
+  font-family: 'Mulish', sans-serif;
+}
+
 .bg-img {
   /* background-size: cover;
   background-repeat: no-repeat; */
@@ -26,11 +32,6 @@ header {
 
 .shadow {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(236, 97, 50, 0.6) !important;
-}
-
-a {
-  color: #ec6132;
-  text-decoration: none;
 }
 
 ul {

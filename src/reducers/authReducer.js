@@ -11,6 +11,7 @@ const authReducer = (state = [], action) => {
       return {
         ...state,
         loggedIn: false,
+        token: "",
       };
 
     default:

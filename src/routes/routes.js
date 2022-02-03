@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import App from './pages/App';
-import LogIn from './pages/LogIn';
-import Signup from './pages/Signup';
-import Car from './pages/Car';
-import Favourite from './pages/Favourite';
-import './css/index.css';
+import App from '../pages/App';
+import LogIn from '../pages/LogIn';
+import Signup from '../pages/Signup';
+import Car from '../pages/Car';
+import Favourite from '../pages/Favourite';
+import '../css/index.css';
 
 const Routes = () => (
   <BrowserRouter>

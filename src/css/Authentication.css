@@ -1,3 +1,7 @@
+.auth {
+  padding: 0 2em;
+}
+
 .auth-container {
   height: 100vh;
   display: grid;
@@ -7,12 +11,17 @@
 
 .auth-container .authInput {
   border: 1px solid rgb(168, 165, 165);
-  padding: 5px 15px;
-  width: 17em;
+  padding: 0 15px;
+  width: 100%;
+  height: 3em;
+}
+
+.authInput::placeholder {
+  text-transform: capitalize;
 }
 
 .auth-container .auth {
-  background: rgba(252, 252, 252, 0.8);
+  background: rgba(252, 252, 252);
 }
 
 .auth-container input:focus {   
@@ -25,4 +34,11 @@
   padding: 7px 27px;
   border: none;
   color: white;
+}
+
+.validation-message {
+  float: left;
+  color: #ec6132;
+  text-transform: lowercase;
+  font-size: 0.9rem;
 }
