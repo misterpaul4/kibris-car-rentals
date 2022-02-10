@@ -27,10 +27,10 @@ const validatePassword = password => {
       valid: false,
       message: 'this field is required'
     }
-  } else if (password.length < 8) {
+  } else if (password.length < 5) {
     return {
       valid: false,
-      message: 'password must contain at least 8 characters'
+      message: 'password must contain at least 5 characters'
     }
   } else {
     return {

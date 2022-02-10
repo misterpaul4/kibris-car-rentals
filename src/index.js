@@ -6,7 +6,6 @@ import rootReducer from './reducers';
 import Routes from './routes/routes';
 import './css/index.css';
 
-
 const store = createStore(
   rootReducer,
   {
@@ -14,6 +13,11 @@ const store = createStore(
       loggedIn: false,
       token: ''
     },
+    alart: {
+      reveal: false,
+      message: '',
+      positiveOutcome: null
+    }
   },
 );
 

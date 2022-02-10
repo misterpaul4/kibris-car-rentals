@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { login } from '../actions';
+import { login, showAlert } from '../actions';
 import { HOST } from '../utils/var';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
@@ -10,6 +10,7 @@ import {validatUsername, validatePassword} from '../utils/validate';
 import '../css/Authentication.css';
 const LogIn = ({
   loginUser,
+  alartUser
 }) => {
   const [userUsername, updateUsername] = useState('');
   const [userPassword, updatePassword] = useState('');
@@ -28,15 +29,15 @@ const LogIn = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userNameValidationObj = validatUsername(userUsername);
-    const passWordValidationObj = validatePassword(userPassword);
+    const validatedUsername = validatUsername(userUsername);
+    const validatedPassword = validatePassword(userPassword);
 
-    updateUsernameValidation(userNameValidationObj);
-    updatePasswordValidation(passWordValidationObj);
+    updateUsernameValidation(validatedUsername);
+    updatePasswordValidation(validatedPassword);
 
-    if (userNameValidationObj.valid && passWordValidationObj.valid) {
+    if (validatedUsername.valid && validatedPassword.valid) {
       const credentials = {
-        username: userUsername,
+        username: userUsername.toLowerCase(),
         password: userPassword,
       }
   
@@ -49,18 +50,20 @@ const LogIn = ({
         },
         body: JSON.stringify(credentials),
       }).then(response => {
-        console.log(response);
         if (response.status.toString() === '200') {
           response.json().then(data => {
             loginUser(data.token);
-            console.log('login successful'); // alert
+            alartUser({message: 'login successful', positiveOutcome: true})
             history.push("/");
           })
-        } else {
-          console.log(response.statusText); // alert
+        } 
+        else {
+          response.json().then(data => {
+            alartUser({message: data.error + '. please try again', positiveOutcome: false})
+          })
         }
       }).catch(function(error) {
-        console.log('Looks like there was a problem: ', error); // alert
+        alartUser({message: 'Looks like there was a problem', positiveOutcome: false})
       });
     }
   };
@@ -71,7 +74,7 @@ const LogIn = ({
         <h1>Log In</h1>
         <p>Hello there, log in and start renting cars <span>&#128515;</span></p>
         <form>
-          <input type='text' className='rounded mt-2 authInput' value={userUsername} onChange={(e) => updateUsername(e.target.value)} placeholder='username' /><br></br>
+          <input type='text' className='rounded mt-2 authInput' value={userUsername.toLowerCase()} onChange={(e) => updateUsername(e.target.value)} placeholder='username' /><br></br>
           <span className={usernameValidation.valid ? 'd-none' : 'validation-message'}><FontAwesomeIcon icon={faExclamationCircle} /> {usernameValidation.message}</span><br></br>
           <input type='password' className='rounded mt-2 authInput' value={userPassword} onChange={(e) => updatePassword(e.target.value)} placeholder='password' /><br></br>
           <span className={passwordValidation.valid ? 'd-none' : 'validation-message'}><FontAwesomeIcon icon={faExclamationCircle} /> {passwordValidation.message}</span><br></br>
@@ -92,6 +95,9 @@ const mapDispatchToProps = dispatch => ({
   loginUser: status => {
     dispatch(login(status));
   },
+  alartUser: status => {
+    dispatch(showAlert(status));
+  }
 });
 
 export default connect(null, mapDispatchToProps)(LogIn);
