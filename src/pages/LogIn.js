@@ -59,7 +59,7 @@ const LogIn = ({
         } 
         else {
           response.json().then(data => {
-            alartUser({message: data.error + '. please try again', positiveOutcome: false})
+            alartUser({message: data.errors + '. please try again', positiveOutcome: false})
           })
         }
       }).catch(function(error) {

@@ -61,7 +61,7 @@ const Signup = ({
         } 
         else {
           response.json().then(data => {
-           alartUser({message: data.error, positiveOutcome: false})
+           alartUser({message: data.errors, positiveOutcome: false})
           })
         }
       }).catch(function(error) {
