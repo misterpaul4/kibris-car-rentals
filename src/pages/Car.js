@@ -1,78 +1,114 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router'
+import { showAlert } from '../actions';
+import { connect } from 'react-redux';
 import Header from '../component/Header';
-import tempCar from '../img/temp_car.jpg';
+import getSymbolFromCurrency from 'currency-symbol-map';
 import avatar from '../img/avatar.png';
 import { moneyWithCommas } from '../utils/util';
+import { HOST } from '../utils/var';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 import '../css/Cars.css';
 
-const tempCarObj = {
-  "id": 1,
-  "daily_rental_price": 100,
-  "three_day_rental_price": 300,
-  "one_week_rental_price": 800,
-  "one_month_rental_price": 6000,
-  "delivery": 'yes',
-  "fuel_type": 'petrol',
-  "rental_requirements": 'Sunt voluptate exercitation eiusmod aliqua culpa. Veniam ipsum cupidatat et esse incididunt irure ad commodo et occaecat proident in esse. Eu minim excepteur id cupidatat mollit magna id officia amet elit officia excepteur aute. Magna magna consectetur fugiat sit excepteur non est aliqua. Veniam do enim sint occaecat. Eiusmod labore ut fugiat sit culpa proident. Ullamco sint irure dolor tempor deserunt velit adipisicing ullamco occaecat tempor quis et nulla sint.',
-  "terms_and_conditions": "Nisi labore laborum sit ea labore. Sint duis proident adipisicing quis non officia do eu nostrud occaecat commodo sint. Id est nostrud in tempor fugiat. Pariatur consectetur labore excepteur est Lorem et est. Aute quis laboris sunt non irure esse eiusmod aliquip qui magna culpa eiusmod aliquip est. Dolor fugiat amet do ut dolore minim culpa culpa officia laborum nisi mollit ut do.",
-  "rental_company": "Britico",
-  "status": "available",
-  "manufacturer": "Lamboghini",
-  "model": 'Urus',
-  "release_year": '2018',
-  "image_url": null
-}
+const Car = ({
+  authToken: auth,
+  alartUser
+}) => {
 
-const Car = () => {
+  const [currentCar, updateCurrentCar] = useState(null);
+  const [localCurrency, updateCurrency] = useState(null)
+
+  let { id } = useParams();
+
+  useEffect(() => {
+    const url = `${HOST}/cars/${id}`;
+  
+    fetch(url).then(response => {
+      if (response.status.toString() === '200') {
+        response.json().then(data => {
+          updateCurrentCar(data);
+          updateCurrency(getSymbolFromCurrency(data.currency))
+        })
+      } 
+      else {
+        alartUser({message: 'Looks like there was a problem. Please try again', positiveOutcome: false})
+      }
+    }).catch(function(error) {
+      alartUser({message: 'Looks like there was a problem. Please check your connection and try again.', positiveOutcome: false})
+    });
+  
+    return null;
+  }, [alartUser, id]);
+
+
+  const getDate = dt => {
+    const months = ["jan","feb","march","april","may","june","july","august","september","october","november","december"];
+    const dateObj = new Date(dt);
+    const day = dateObj.getDate().toString();
+    const month = dateObj.getMonth();
+    const year = dateObj.getFullYear().toString();
+
+    return (day + '-' + months[month] + '-' + year);
+  }
+
+  
+
   return (
     <div className='car-page-container d-flex flex-column justify-content-between'>
+      {
+        currentCar ?
+        <>
       <div className='car-page--child-container'>
-        <Header heading={tempCarObj.rental_company} />
+        <Header heading={currentCar.rental_company} />
         <div className='d-flex flex-column align-items-center car-page'>
           {/* car image */}
-          <div className='car-img bg-img' style={{backgroundImage: `url(${tempCar})`}}>
+          <div className='car-img bg-img' style={{backgroundImage: `url(${currentCar.image_url})`}}>
             <div className='bg-float d-flex justify-content-between align-items-center p-3 w-100'>
               {/* avatar & company */}
               <div>
                 <img src={avatar} alt='rental company avatar' className='rental-company-AV'></img>
-                <span>{tempCarObj.rental_company}</span>
+                <span>{currentCar.rental_company}</span>
               </div>
 
               {/* rental price */}
               <div className='lh-sm'>
-                <span className='fw-bold fs-3'>₺ {moneyWithCommas(tempCarObj.daily_rental_price)}</span><br></br>
+                <span className='fw-bold fs-3'> {localCurrency} {parseInt(moneyWithCommas(currentCar.daily_rental_price))}</span><br></br>
                 <em>per day</em>
               </div>
             </div>
           </div>
 
           <div className='mt-4 container car-details'>
+            <p className='upload-date mb-3'><FontAwesomeIcon icon={faCalendar} /> {getDate(currentCar.created_at)}
+            </p>
             <h2>About this rental</h2>
             <ul>
-              <li>Manufacturer: <strong>{tempCarObj.manufacturer}</strong></li>
-              <li>Model: <strong>{tempCarObj.model}, {tempCarObj.release_year} model</strong></li>
-              <li>Delivery: <strong>{tempCarObj.delivery}</strong></li>
-              <li>Fuel type: <strong>{tempCarObj.fuel_type}</strong></li>
+              <li>Manufacturer: <strong>{currentCar.manufacturer}</strong></li>
+              <li>Model: <strong>{currentCar.model}, {currentCar.model_year} model</strong></li>
+              <li>Delivery: <strong>{currentCar.delivery === 'true' ? 'yes' : 'no'}</strong></li>
+              <li>Fuel type: <strong>{currentCar.fuel_type ? currentCar.fuel_type : 'N/A'}</strong></li>
+              <li>Vin number: <strong>{currentCar.car_vin ? currentCar.car_vin : 'N/A'}</strong></li>
             </ul>
 
             <h2>Pricing</h2>
             <ul>
-              <li>3 days rental price: <strong>₺{moneyWithCommas(tempCarObj.three_day_rental_price)}</strong></li>
-              <li>1 week rental price: <strong>₺{moneyWithCommas(tempCarObj.one_week_rental_price)}</strong></li>
-              <li>Monthly rental price: <strong>₺{moneyWithCommas(tempCarObj.one_month_rental_price)}</strong></li>
+              <li>3 days rental price: <strong>{localCurrency}{parseInt(moneyWithCommas(currentCar.three_day_rental_price))}</strong></li>
+              <li>1 week rental price: <strong>{localCurrency}{parseInt(moneyWithCommas(currentCar.one_week_rental_price))}</strong></li>
+              <li>Monthly rental price: <strong>{localCurrency}{parseInt(moneyWithCommas(currentCar.one_month_rental_price))}</strong></li>
             </ul>
             {
-              tempCarObj.terms_and_conditions ?
+              currentCar.terms_and_conditions ?
               <><h2>Terms & conditions</h2>
-              <p>{tempCarObj.terms_and_conditions}</p>
+              <p>{currentCar.terms_and_conditions}</p>
               </> :
               null
             }
 
             {
-              tempCarObj.rental_requirements ?
+              currentCar.rental_requirements ?
               <><h2>Rental requirements</h2>
-              <p>{tempCarObj.rental_requirements}</p>
+              <p>{currentCar.rental_requirements}</p>
               </> :
               null
             }
@@ -80,15 +116,29 @@ const Car = () => {
         </div>
       </div>
 
-      <button className={tempCarObj.status === 'rented' ? 'rent-btn-container text-center p-2 mt-2 align-self-center bg-red' : 'bg-green rent-btn-container text-center p-2 mt-2 align-self-center'}>
+      <button className={currentCar.availability !== 'true' ? 'rent-btn-container text-center p-2 mt-2 align-self-center bg-red' : 'bg-green rent-btn-container text-center p-2 mt-2 align-self-center'}>
         {
-          tempCarObj.status === 'rented' ?
+          currentCar.availability !== 'true' ?
           'Rented' : 
           'Apply to rent'
         }
       </button>
+        </>
+
+        : <p className='text-center mt-5'>...loading</p>
+      }
     </div>
   );
 }
 
-export default Car;
+const mapStateToProps = state => ({
+  authToken: state.auth
+});
+
+const mapDispatchToProps = dispatch => ({
+  alartUser: status => {
+    dispatch(showAlert(status));
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Car);

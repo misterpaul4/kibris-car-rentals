@@ -1,6 +1,7 @@
 .car-details {
   background-color: white;
   width: 100%;
+  font-size: 0.9rem;
 }
 
 .carousel .carousel-control-prev,
@@ -9,11 +10,13 @@
 }
 
 .carousel .carousel-control-next:hover {
-  cursor: e-resize;
+  /* cursor: e-resize; */
+  background-color: rgba(204, 206, 218, 0.12);
 }
 
 .carousel .carousel-control-prev:hover {
-  cursor: w-resize;
+  /* cursor: w-resize; */
+  background-color: rgba(204, 206, 218, 0.12);
 }
 
 .car-img {
@@ -62,4 +65,10 @@
 
 .car-page--child-container {
   overflow: scroll;
+}
+
+.upload-date {
+  font-style: italic;
+  font-size: 0.8rem;
+  color: gray;
 }
