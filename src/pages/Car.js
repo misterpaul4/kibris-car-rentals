@@ -17,18 +17,61 @@ const Car = ({
 }) => {
 
   const [currentCar, updateCurrentCar] = useState(null);
-  const [localCurrency, updateCurrency] = useState(null)
+  const [localCurrency, updateCurrency] = useState(null);
+  const [isWaiting, updateWaitingList] = useState(false);
+  const [actionBtnPresets, updatePresets] = useState({
+    actionBtnColor: '',
+    actionBtnText: '',
+    disableBtn: true,
+    update: false,
+  })
+
 
   let { id } = useParams();
 
   useEffect(() => {
     const url = `${HOST}/cars/${id}`;
+
+    const tempUser = {id: 2, username: "favour", password_digest: "$2a$12$w5.E/SGfF7y8OsQzo80PG.SKBA9uvsGDo6cHbTYyivyT.Yssjzd5K", company_name: null, role: "user"}
   
     fetch(url).then(response => {
       if (response.status.toString() === '200') {
         response.json().then(data => {
           updateCurrentCar(data);
-          updateCurrency(getSymbolFromCurrency(data.currency))
+          updateCurrency(getSymbolFromCurrency(data.currency));
+
+          if (data.availability === 'false') {
+            updatePresets({
+              actionBtnColor: 'rent-btn-container text-center p-2 mt-2 align-self-center bg-red',
+              actionBtnText: 'rented',
+              disableBtn: true,
+              update: true
+            })
+          } else {
+          // check if user in waiting list
+            data.waiting_lists.every(user => {
+              if (user.applicant.username === tempUser.username) {
+                updateWaitingList(true);
+                return false;
+              }
+            })
+
+            if (isWaiting) {
+              updatePresets({
+                actionBtnColor: 'bg-warning rent-btn-container text-center p-2 mt-2 align-self-center',
+                actionBtnText: 'pending approval',
+                disableBtn: true,
+                update: true
+              })
+            } else {
+              updatePresets({
+                actionBtnColor: 'rent-btn-container text-center p-2 mt-2 align-self-center bg-green',
+                actionBtnText: 'apply to rent',
+                disableBtn: false,
+                update: true
+              })
+            }
+          }
         })
       } 
       else {
@@ -38,8 +81,7 @@ const Car = ({
       alartUser({message: 'Looks like there was a problem. Please check your connection and try again.', positiveOutcome: false})
     });
   
-    return null;
-  }, [alartUser, id]);
+  }, [isWaiting, alartUser, id]);
 
 
   const getDate = dt => {
@@ -52,12 +94,45 @@ const Car = ({
     return (day + '-' + months[month] + '-' + year);
   }
 
-  
+  const actionBtn = async () => {
+    // console.log('my token ', auth.loggedIn);
+    const credentials = {
+      car_id: id
+    }
+    if (auth.loggedIn) {
+      await fetch(`${HOST}/waiting_lists/`, {
+        method: "POST",
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: auth.token,
+        },
+        body: JSON.stringify(credentials),
+      }).then(response => {
+        if (response.status.toString() === '201') {
+          response.json().then(data => {
+            alartUser({message: 'application sent successfully', positiveOutcome: true})
+          })
+        } 
+        else {
+          response.json().then(data => {
+            alartUser({message: data.errors, positiveOutcome: false})
+          })
+        }
+      }).catch(function(error) {
+        alartUser({message: 'Looks like there was a problem', positiveOutcome: false})
+      });
+    } else {
+      // display login modal
+      alartUser({message: 'Not logged in', positiveOutcome: false})
+    }
+  }
 
   return (
     <div className='car-page-container d-flex flex-column justify-content-between'>
       {
-        currentCar ?
+        actionBtnPresets.update ?
         <>
       <div className='car-page--child-container'>
         <Header heading={currentCar.rental_company} />
@@ -116,12 +191,8 @@ const Car = ({
         </div>
       </div>
 
-      <button className={currentCar.availability !== 'true' ? 'rent-btn-container text-center p-2 mt-2 align-self-center bg-red' : 'bg-green rent-btn-container text-center p-2 mt-2 align-self-center'}>
-        {
-          currentCar.availability !== 'true' ?
-          'Rented' : 
-          'Apply to rent'
-        }
+      <button disabled={actionBtnPresets.disableBtn} onClick={actionBtn} className={actionBtnPresets.actionBtnColor}>
+        {actionBtnPresets.actionBtnText}
       </button>
         </>
 
