@@ -9,7 +9,7 @@ const authReducer = (state = [], action) => {
       };
 
     case 'LOGOUT':
-      return {
+    return {
         ...state,
         loggedIn: false,
         token: "",

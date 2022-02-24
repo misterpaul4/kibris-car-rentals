@@ -23,6 +23,7 @@ const Header =  ({
 }) => {
 
   const authAction = () => {
+    localStorage.clear();
     logoutUser();
   }
 

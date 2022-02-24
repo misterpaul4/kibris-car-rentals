@@ -7,6 +7,7 @@ import Signup from '../pages/Signup';
 import Car from '../pages/Car';
 import Favourite from '../pages/Favourite';
 import Alert from '../component/Alert';
+import PrivateRoute from './PrivateRoute';
 import '../css/index.css';
 
 const Routes = ({
@@ -21,10 +22,9 @@ const Routes = ({
     <Switch>
       <Route exact path="/" component={App} />
       <Route exact path="/login" component={LogIn} />
-      <Route exact path="/signup" component={Signup} />
       <Route exact path="/cars/:id/:rental/:manufacturer/:model" component={Car} />
       <Route exact path="/signup" component={Signup} />
-      <Route exact path="/user/:id/cars/favourites" component={Favourite} />
+      <PrivateRoute exact path="/user/:id/cars/favourites" component={Favourite} />
     </Switch>
   </BrowserRouter>
 );
@@ -32,5 +32,6 @@ const Routes = ({
 const mapStateToProps = state => ({
   showAlert: state.alart
 });
+
 
 export default connect(mapStateToProps, null)(Routes);

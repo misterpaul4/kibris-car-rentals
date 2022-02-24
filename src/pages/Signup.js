@@ -55,6 +55,8 @@ const Signup = ({
         if (response.status.toString() === '201') {
           response.json().then(data => {
             loginUser(data.username, data.token);
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('username', data.username)
             alartUser({message: 'signup successful', positiveOutcome: true});
             history.push("/");
           })

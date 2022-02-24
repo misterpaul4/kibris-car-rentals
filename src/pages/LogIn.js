@@ -53,6 +53,8 @@ const LogIn = ({
         if (response.status.toString() === '200') {
           response.json().then(data => {
             loginUser(data.username, data.token);
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('username', data.username);
             alartUser({message: 'login successful', positiveOutcome: true})
             history.push("/");
           })

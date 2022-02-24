@@ -5,7 +5,6 @@ import Filter from '../component/Filter';
 import Cars from '../component/Cars';
 
 function App() {
-
   return (
     <div className="App">
       <Header heading={'Cars'} />
