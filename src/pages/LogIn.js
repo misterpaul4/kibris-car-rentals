@@ -52,7 +52,7 @@ const LogIn = ({
       }).then(response => {
         if (response.status.toString() === '200') {
           response.json().then(data => {
-            loginUser(data.token);
+            loginUser(data.username, data.token);
             alartUser({message: 'login successful', positiveOutcome: true})
             history.push("/");
           })

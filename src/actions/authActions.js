@@ -1,6 +1,7 @@
-const login = token => ({
+const login = (username, token) => ({
   type: 'LOGIN',
-  token,
+  username,
+  token
 });
 
 const logout = () => ({

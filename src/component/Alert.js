@@ -18,9 +18,7 @@ const Alert = ({
   }, [removeAlert]);
 
   return (
-    <div className="alert-container">
-      <p className={alart.positiveOutcome ? "alert-message rounded bg-green" : "alert-message rounded bg-red"}>{alart.message}</p>
-    </div>
+    <p className={alart.positiveOutcome ? "alert-message rounded bg-green" : "alert-message rounded bg-red"}>{alart.message}</p>
   )
 }
 

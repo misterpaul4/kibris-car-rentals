@@ -4,7 +4,8 @@ const authReducer = (state = [], action) => {
       return {
         ...state,
         loggedIn: true,
-        token: action.token
+        token: action.token,
+        username: action.username
       };
 
     case 'LOGOUT':
@@ -12,7 +13,7 @@ const authReducer = (state = [], action) => {
         ...state,
         loggedIn: false,
         token: "",
-      };
+        username: ""};
 
     default:
       return state;

@@ -11,7 +11,8 @@ const store = createStore(
   {
     auth: {
       loggedIn: false,
-      token: ''
+      token: '',
+      username: '',
     },
     alart: {
       reveal: false,
