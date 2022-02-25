@@ -6,13 +6,16 @@ import rootReducer from './reducers';
 import Routes from './routes/routes';
 import './css/index.css';
 
+const usernameLS = localStorage.getItem('username');
+const tokenLS = localStorage.getItem('token');
+
 const store = createStore(
   rootReducer,
   {
     auth: {
-      loggedIn: false,
-      token: '',
-      username: '',
+      loggedIn: tokenLS ? true : false,
+      token: tokenLS,
+      username: usernameLS
     },
     alart: {
       reveal: false,

@@ -12,7 +12,9 @@ import '../css/index.css';
 
 const Routes = ({
   showAlert: alart,
-}) => (
+}) => {
+
+  return (
   <BrowserRouter>
   {
     alart.reveal ?
@@ -27,11 +29,10 @@ const Routes = ({
       <PrivateRoute exact path="/user/:id/cars/favourites" component={Favourite} />
     </Switch>
   </BrowserRouter>
-);
+)};
 
 const mapStateToProps = state => ({
-  showAlert: state.alart
+  showAlert: state.alart,
 });
-
 
 export default connect(mapStateToProps, null)(Routes);

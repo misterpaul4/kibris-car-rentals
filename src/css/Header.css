@@ -10,11 +10,13 @@
 .nav-list li {
   list-style-type: none;
   margin: 10px 0;
+  transition: padding 0.3s;
 }
 
 .nav-list li:hover {
   border-left: 2px solid red;
   background-color: rgb(238, 237, 237);
+  padding-left: 30px !important;
 }
 
 .offcanvas hr {

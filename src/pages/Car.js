@@ -31,8 +31,6 @@ const Car = ({
 
   useEffect(() => {
     const url = `${HOST}/cars/${id}`;
-
-    const tempUser = {id: 2, username: "favour", password_digest: "$2a$12$w5.E/SGfF7y8OsQzo80PG.SKBA9uvsGDo6cHbTYyivyT.Yssjzd5K", company_name: null, role: "user"}
   
     fetch(url).then(response => {
       if (response.status.toString() === '200') {
@@ -50,10 +48,12 @@ const Car = ({
           } else {
           // check if user in waiting list
             data.waiting_lists.every(user => {
-              if (user.applicant.username === tempUser.username) {
+              if (user.applicant.username === auth.username) {
                 updateWaitingList(true);
                 return false;
               }
+
+              return true;
             })
 
             if (isWaiting) {
@@ -81,7 +81,7 @@ const Car = ({
       alartUser({message: 'Looks like there was a problem. Please check your connection and try again.', positiveOutcome: false})
     });
   
-  }, [isWaiting, alartUser, id]);
+  }, [isWaiting, alartUser, id, auth]);
 
 
   const getDate = dt => {
@@ -95,10 +95,10 @@ const Car = ({
   }
 
   const actionBtn = async () => {
-    // console.log('my token ', auth.loggedIn);
     const credentials = {
       car_id: id
     }
+  
     if (auth.loggedIn) {
       await fetch(`${HOST}/waiting_lists/`, {
         method: "POST",
