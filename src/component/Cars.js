@@ -11,34 +11,80 @@ import { showAlert } from '../actions';
 import '../css/Cars.css';
 
 const Cars = ({
+  alartUser,
   authToken: auth,
-  alartUser
 }) => {
   const [currentCarIndex, updateCarIndex] = useState(1);
-  const [carList, updateCarlist] = useState(null);
+  const [carList, updateCarlist] = useState([]);
+  const [fetched, updateFetched] = useState(false);
 
   useEffect(() => {
-    const url = `${HOST}/cars`;
-  
-    fetch(url).then(response => {
-      if (response.status.toString() === '200') {
-        response.json().then(data => {
-          updateCarlist(data);
-        })
-      } 
-      else {
-        alartUser({message: 'Looks like there was a problem. Please try again', positiveOutcome: false})
+    const carsConfig = !auth.loggedIn
+    ?
+    {
+      url: `${HOST}/cars`,
+      updateState: data => updateCarlist(data),
+    }
+    : 
+    {
+      url: `${HOST}/cars_favs/${auth.username}`,
+      updateState: data => {
+        const tempCars = data.cars;
+        const tempCars2 = [...data.cars];
+
+        // data.favourites(favourited car ids) is already sorted from backend
+        data.favourites.forEach(id => {
+          tempCars2.every((car, index) => {
+            if (car.id === id.car_id) {
+              tempCars[index] = {
+                ...car,
+                faved: true
+              }
+              tempCars2.slice(index);
+
+              return false;
+            }
+
+            return true;
+          });
+        });
+
+        updateCarlist(tempCars);
       }
-    }).catch(function(error) {
-      alartUser({message: 'Looks like there was a problem. Please check your connection and try again.', positiveOutcome: false})
-    });
+    }  
+
+    const getData = async () => {
+      await fetch(carsConfig.url,{
+        method: "GET",
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: auth.token
+        }
+      }).then(response => { 
+        if (response.status.toString() === '200') {
+          response.json().then(data => {
+            carsConfig.updateState(data);
+            updateFetched(true);
+          })
+        } 
+        else {
+          alartUser({message: 'there seems to be a problem', positiveOutcome: false})
+        }
+      }).catch(function(error) {
+        alartUser({message: 'Looks like there was a problem. Please check your connection and try again.', positiveOutcome: false})
+      });;
+    }
+
+    getData();
   
     return null;
-  }, [alartUser]);
+  }, [alartUser, auth]);
 
-  const AttachCars = (car, index) => {
+  const AttachCars = car => {
     return (
-      <Carousel.Item className='border' key={index}>
+      <Carousel.Item className='border' key={car.id}>
         {/* image */}
         <Link to={`/cars/${car.id}/${toSnakeCase(car.rental_company)}/${toSnakeCase(car.manufacturer)}/${toSnakeCase(car.model)}`} >
           <div className='car-img bg-img' style={{backgroundImage: `url(${car.image_url})`}}>
@@ -59,7 +105,7 @@ const Cars = ({
 
           <div className='d-flex justify-content-between align-items-end mt-3'>
             <div>
-              <FvIcon />
+              <FvIcon carID={car.id} favourited={car.faved}/>
             </div>
 
             <div className={car.availability === 'false' ? 'cl-red' : 'cl-green'}>
@@ -74,7 +120,7 @@ const Cars = ({
   return (
     <div className='cars-container'>
       {
-        carList ?
+        fetched ?
         <>
         <Carousel interval={null} indicators={false} className='p-3' onSlide={index => {
           updateCarIndex(index + 1);
@@ -83,7 +129,7 @@ const Cars = ({
         </Carousel>
   
         <div className='text-center m-3'>
-          {currentCarIndex} / {carList.length}
+          {currentCarIndex} / {carList && carList.length}
         </div>
         </>
         : <p className='text-center'>...loading</p>
