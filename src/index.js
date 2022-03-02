@@ -9,13 +9,24 @@ import './css/index.css';
 const usernameLS = localStorage.getItem('username');
 const tokenLS = localStorage.getItem('token');
 
+const storeConfig = tokenLS ? {
+  loggedIn: true,
+  token: tokenLS,
+  username: usernameLS
+} : 
+{
+  loggedIn: false,
+  token: '',
+  username: ''
+}
+
 const store = createStore(
   rootReducer,
   {
     auth: {
-      loggedIn: tokenLS ? true : false,
-      token: tokenLS,
-      username: usernameLS
+      loggedIn: storeConfig.loggedIn,
+      token: storeConfig.token ,
+      username: storeConfig.username
     },
     alart: {
       reveal: false,

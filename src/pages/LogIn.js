@@ -52,9 +52,12 @@ const LogIn = ({
       }).then(response => {
         if (response.status.toString() === '200') {
           response.json().then(data => {
-            loginUser(data.username, data.token);
             localStorage.setItem('token', data.token);
             localStorage.setItem('username', data.username);
+            loginUser({
+              username: data.username,
+              token: data.token
+            });
             alartUser({message: 'login successful', positiveOutcome: true})
             history.push("/");
           })
@@ -82,6 +85,10 @@ const LogIn = ({
           <span className={passwordValidation.valid ? 'd-none' : 'validation-message'}><FontAwesomeIcon icon={faExclamationCircle} /> {passwordValidation.message}</span><br></br>
           <input type='submit' onClick={handleSubmit} value='Log In' className='rounded my-3 bg-red shadow' />
         </form>
+
+        <div>
+          <Link to={`/`}>Skip login</Link>
+        </div>
 
         <div className='mt-5'>
           Don't have an account?

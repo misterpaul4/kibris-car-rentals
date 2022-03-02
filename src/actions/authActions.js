@@ -1,4 +1,4 @@
-const login = (username, token) => ({
+const login = ({username, token}) => ({
   type: 'LOGIN',
   username,
   token
