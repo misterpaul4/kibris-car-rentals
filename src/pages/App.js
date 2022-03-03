@@ -12,6 +12,7 @@ function App({
   alartUser
 }) {
   const [carList, updateCarlist] = useState(null);
+  // const [favUpdated, updateFavourited] = useState(false);
 
   useEffect(() => {
     const carsConfig = auth.loggedIn
@@ -27,7 +28,8 @@ function App({
             if (car.id === id.car_id) {
               tempCars[index] = {
                 ...car,
-                faved: true
+                faved: true,
+                favID: id.id
               }
                 tempCars2.slice(index);
               return false;
@@ -74,14 +76,64 @@ function App({
     return null;
   }, [auth, alartUser]);
 
-  const renderCar = () => carList ? <Cars carList={carList}/> : <span>...loading</span>
+  const handleFavouriteClick = (car, favourited) => {
+    const favTrue = {
+      url: `${HOST}/favourites/${car.favID}`,
+      method: "DELETE",
+      requestStatus: "204",
+      successMessage: "removed from favourites"
+    };
+  
+    const favFalse = {
+      url: `${HOST}/favourites`,
+      method: "POST",
+      requestStatus: "201",
+      successMessage: "added to favourites"
+    };
+    const apiRequestConfig = favourited ? favTrue : favFalse;
+
+    const credentials = {
+      car_id: car.id
+    };
+
+    const apiFetch = async () => {
+      await fetch(apiRequestConfig.url, {
+        method: apiRequestConfig.method,
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: auth.token,
+        },
+        body: JSON.stringify(credentials),
+      }).then(response => {
+          if (response.status.toString() === apiRequestConfig.requestStatus) {
+            alartUser({message: apiRequestConfig.successMessage, positiveOutcome: true})
+          } else {
+            response.json().then(data => {
+              alartUser({message: data.errors, positiveOutcome: false});
+            });
+          }
+        }).catch(error => {
+          alartUser({message: "Looks like there was a problem. Please check your connection and try again.", positiveOutcome: false})
+        })
+    }
+
+    if (auth.loggedIn) {
+      apiFetch();
+    } else {
+      alartUser({message: "you are not logged in", positiveOutcome: false})
+    }
+  };
+
+  const cars = carList ? <Cars carList={carList} onFavClick={handleFavouriteClick} /> : <span>...loading</span>
   
   return (
     <div className="App">
       <Header heading={'Cars'} />
       <Filter />
       <div className='d-flex justify-content-center'>
-        {renderCar()}
+        {cars}
       </div>
     </div>
   );

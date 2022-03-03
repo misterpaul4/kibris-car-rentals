@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import Carousel from 'react-bootstrap/Carousel'
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { moneyWithCommas } from '../utils/util';
 import FvIcon from './FavIcon';
@@ -8,7 +7,8 @@ import { toSnakeCase } from '../utils/util';
 import '../css/Cars.css';
 
 const CarCard = ({
-  car
+  car,
+  onFavClick
 }) => {
 
   return (
@@ -31,7 +31,7 @@ const CarCard = ({
 
         <div className='d-flex justify-content-between align-items-end mt-3'>
           <div>
-            <FvIcon carID={car.id} favourited={car.faved}/>
+            <FvIcon car={car} favourited={car.faved} onFavClick={onFavClick} />
           </div>
 
           <div className={car.availability === 'false' ? 'cl-red' : 'cl-green'}>

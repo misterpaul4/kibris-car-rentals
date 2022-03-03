@@ -1,25 +1,21 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import favouritedIcon from '../img/favourited.svg';
 import unfavouritedIcon from '../img/unfavourited.svg';
 import '../css/Favourite.css';
 // import { HOST } from '../utils/var';
-import { showAlert } from '../actions';
 
 const FavIcon = ({
   favourited,
-  authToken: auth,
-  // alartUser
+  car,
+  onFavClick
 }) => {
 
-  const handlClick = async () => {
+  const handlClick = () => {
     // const credentials = {
     //   car_id: carID
     // }
 
-    if (auth.loggedIn) {
-      console.log('favourite button clicked');
-    }
+    onFavClick(car, favourited);
 
     // const url = HOST + '/favourites';
     // await fetch(url,
@@ -55,16 +51,4 @@ FavIcon.defaultProps = {
   favourited: false
 }
 
-const mapStateToProps = state => ({
-  authToken: state.auth
-});
-
-const mapDispatchToProps = dispatch => ({
-  alartUser: status => {
-    dispatch(showAlert(status));
-  }
-});
-
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(FavIcon);
+export default FavIcon;
