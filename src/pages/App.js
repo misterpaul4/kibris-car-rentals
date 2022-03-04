@@ -12,7 +12,6 @@ function App({
   alartUser
 }) {
   const [carList, updateCarlist] = useState(null);
-  // const [favUpdated, updateFavourited] = useState(false);
 
   useEffect(() => {
     const carsConfig = auth.loggedIn
@@ -48,8 +47,8 @@ function App({
       updateState: data => updateCarlist(data),
     }
 
-    const getData = async () => {
-      await fetch(carsConfig.url,{
+    const getData = () => {
+      fetch(carsConfig.url,{
         method: "GET",
         mode: 'cors',
         headers: {
@@ -69,14 +68,13 @@ function App({
       }).catch(function(error) {
         alartUser({message: 'Looks like there was a problem. Please check your connection and try again.', positiveOutcome: false});
       });
-    }
-
+  }
     getData();
 
     return null;
   }, [auth, alartUser]);
 
-  const handleFavouriteClick = (car, favourited) => {
+  const handleFavouriteClick = (car, favourite, updateFavourite) => {
     const favTrue = {
       url: `${HOST}/favourites/${car.favID}`,
       method: "DELETE",
@@ -90,7 +88,7 @@ function App({
       requestStatus: "201",
       successMessage: "added to favourites"
     };
-    const apiRequestConfig = favourited ? favTrue : favFalse;
+    const apiRequestConfig = favourite ? favTrue : favFalse;
 
     const credentials = {
       car_id: car.id
@@ -108,16 +106,20 @@ function App({
         body: JSON.stringify(credentials),
       }).then(response => {
           if (response.status.toString() === apiRequestConfig.requestStatus) {
-            alartUser({message: apiRequestConfig.successMessage, positiveOutcome: true})
+            // update
+            updateFavourite(!favourite);
+            alartUser({message: apiRequestConfig.successMessage, positiveOutcome: true});
           } else {
-            response.json().then(data => {
-              alartUser({message: data.errors, positiveOutcome: false});
-            });
+            console.log("failure");
+            console.log("method ran", apiRequestConfig.method);
+            console.log(car);
+            // response.json().then(data => {
+            //   alartUser({message: data.errors, positiveOutcome: false});
+            // });
           }
         }).catch(error => {
           alartUser({message: "Looks like there was a problem. Please check your connection and try again.", positiveOutcome: false})
-        })
-    }
+        })}
 
     if (auth.loggedIn) {
       apiFetch();
@@ -127,7 +129,7 @@ function App({
   };
 
   const cars = carList ? <Cars carList={carList} onFavClick={handleFavouriteClick} /> : <span>...loading</span>
-  
+
   return (
     <div className="App">
       <Header heading={'Cars'} />

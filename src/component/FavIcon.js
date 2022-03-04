@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import favouritedIcon from '../img/favourited.svg';
 import unfavouritedIcon from '../img/unfavourited.svg';
 import '../css/Favourite.css';
@@ -9,41 +9,24 @@ const FavIcon = ({
   car,
   onFavClick
 }) => {
+  const [favourite, updateFavourite] = useState(false);
+
+  useEffect(() => {
+    console.log("BUTTON MOUNTED OR UPDATED");
+  
+    updateFavourite(favourited);
+
+  }, [favourited]);
+
+  console.log("RENDERED");
 
   const handlClick = () => {
-    // const credentials = {
-    //   car_id: carID
-    // }
-
-    onFavClick(car, favourited);
-
-    // const url = HOST + '/favourites';
-    // await fetch(url,
-    //   {
-    //     method: "POST",
-    //     mode: 'cors',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       Accept: 'application/json',
-    //       Authorization: auth.token,
-    //     },
-    //     body: JSON.stringify(credentials),
-    //   }).then(response => {
-    //   if (response.status.toString() === '201') {
-    //     alartUser({message: 'added to favourites', positiveOutcome: true})
-    //   } 
-    //   else {
-    //     response.json().then(data => {
-    //       alartUser({message: data.errors, positiveOutcome: false});
-    //     });
-    //   }
-    // }).catch(function(error) {
-    //   alartUser({message: 'Looks like there was a problem. Please check your connection and try again.', positiveOutcome: false})
-    // });
+    console.log("BUTTON CLICKED");
+    onFavClick(car, favourite, updateFavourite);
   }
 
   return (
-    <img onClick={handlClick} src={favourited ? favouritedIcon : unfavouritedIcon} className='fv-icon' alt='favourite icon'></img>
+    <img onClick={handlClick} src={favourite ? favouritedIcon : unfavouritedIcon} className='fv-icon' alt='favourite icon'></img>
   );
 };
 

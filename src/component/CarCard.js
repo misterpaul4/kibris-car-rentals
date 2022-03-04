@@ -8,7 +8,7 @@ import '../css/Cars.css';
 
 const CarCard = ({
   car,
-  onFavClick
+  onFavClick,
 }) => {
 
   return (
