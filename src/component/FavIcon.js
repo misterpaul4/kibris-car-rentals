@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState} from 'react';
 import favouritedIcon from '../img/favourited.svg';
 import unfavouritedIcon from '../img/unfavourited.svg';
 import '../css/Favourite.css';
@@ -6,27 +6,19 @@ import '../css/Favourite.css';
 
 const FavIcon = ({
   favourited,
-  car,
-  onFavClick
+  onFavClick,
+  car
 }) => {
-  const [favourite, updateFavourite] = useState(false);
-
-  useEffect(() => {
-    console.log("BUTTON MOUNTED OR UPDATED");
-  
-    updateFavourite(favourited);
-
-  }, [favourited]);
-
-  console.log("RENDERED");
+  const [favourite, updateFavourite] = useState(favourited);
 
   const handlClick = () => {
-    console.log("BUTTON CLICKED");
     onFavClick(car, favourite, updateFavourite);
   }
 
   return (
-    <img onClick={handlClick} src={favourite ? favouritedIcon : unfavouritedIcon} className='fv-icon' alt='favourite icon'></img>
+    <img onClick={handlClick}
+    src={favourite ? favouritedIcon : unfavouritedIcon}
+    className='fv-icon' alt='favourite icon'></img>
   );
 };
 

@@ -8,9 +8,9 @@ const Cars = ({carList, onFavClick}) => {
 
   const onCarouselSlide = index => updateCarIndex(index + 1);
 
-  const renderCarCard = carList.map((car, index) => (
+  const renderCarCard = carList.map(car => (
     <Carousel.Item className='border' key={car.id}>
-      <CarCard car={car} carIndex={index} key={car.id} onFavClick={onFavClick} />
+      <CarCard car={car} key={car.id} onFavClick={onFavClick} />
     </Carousel.Item> 
   ))
 

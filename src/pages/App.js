@@ -19,18 +19,18 @@ function App({
     {
       url: `${HOST}/cars_favs/${auth.username}`,
       updateState: data => {
-        const tempCars = data.cars;
-        let tempCars2 = [...data.cars];
-
+        const cars = data.cars;
+        let carsCopy = [...data.cars];
+        // loop though each car and check if it has been favourited
         data.favourites.forEach(id => {
-          tempCars2.every((car, index) => {
+          carsCopy.every((car, index) => {
             if (car.id === id.car_id) {
-              tempCars[index] = {
+              cars[index] = {
                 ...car,
                 faved: true,
-                favID: id.id
               }
-                tempCars2.slice(index);
+              // since all cars in fav
+                carsCopy.slice(index);
               return false;
             }
 
@@ -38,7 +38,7 @@ function App({
           });
         });
 
-        updateCarlist(tempCars);
+        updateCarlist(cars);
       }
     }
     :
@@ -74,28 +74,26 @@ function App({
     return null;
   }, [auth, alartUser]);
 
-  const handleFavouriteClick = (car, favourite, updateFavourite) => {
+  const handleFavouriteClick = (car, favourited, updateFavourite) => {
     const favTrue = {
-      url: `${HOST}/favourites/${car.favID}`,
       method: "DELETE",
       requestStatus: "204",
-      successMessage: "removed from favourites"
+      successMessage: "removed from favourites",
     };
   
     const favFalse = {
-      url: `${HOST}/favourites`,
       method: "POST",
       requestStatus: "201",
       successMessage: "added to favourites"
     };
-    const apiRequestConfig = favourite ? favTrue : favFalse;
+    const apiRequestConfig = favourited ? favTrue : favFalse;
 
     const credentials = {
       car_id: car.id
     };
 
     const apiFetch = async () => {
-      await fetch(apiRequestConfig.url, {
+      await fetch(`${HOST}/favourites`, {
         method: apiRequestConfig.method,
         mode: 'cors',
         headers: {
@@ -107,20 +105,17 @@ function App({
       }).then(response => {
           if (response.status.toString() === apiRequestConfig.requestStatus) {
             // update
-            updateFavourite(!favourite);
+            updateFavourite(!favourited);
             alartUser({message: apiRequestConfig.successMessage, positiveOutcome: true});
           } else {
-            console.log("failure");
-            console.log("method ran", apiRequestConfig.method);
-            console.log(car);
-            // response.json().then(data => {
-            //   alartUser({message: data.errors, positiveOutcome: false});
-            // });
+            response.json().then(data => {
+              alartUser({message: data.errors, positiveOutcome: false});
+            });
           }
         }).catch(error => {
           alartUser({message: "Looks like there was a problem. Please check your connection and try again.", positiveOutcome: false})
-        })}
-
+    })}
+      
     if (auth.loggedIn) {
       apiFetch();
     } else {
@@ -141,7 +136,6 @@ function App({
   );
 }
 
-
 const mapStateToProps = state => ({
   authToken: state.auth
 });
@@ -151,6 +145,5 @@ const mapDispatchToProps = dispatch => ({
     dispatch(showAlert(status));
   }
 });
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
