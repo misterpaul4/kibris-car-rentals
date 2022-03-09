@@ -16,6 +16,15 @@ const CarCard = ({
 
   const handleFavRemoval = () => onFavClick(car, index, carsCarList, updateCarsCarlist);
 
+  const { className, availability } = car.availability === "true" ? {
+    className: "cl-green",
+    availability: "available"
+  } : 
+  {
+    className: "cl-red",
+    availability: "rented"
+  }
+
   return (
     <>
       <Link to={`/cars/${car.id}/${toSnakeCase(car.rental_company)}/${toSnakeCase(car.manufacturer)}/${toSnakeCase(car.model)}`} >
@@ -39,8 +48,8 @@ const CarCard = ({
             <img onClick={handleFavRemoval} src={favouritedIcon} className='fv-icon' alt='favourite icon'></img>
           </div>
 
-          <div className={car.availability === 'false' ? 'cl-red' : 'cl-green'}>
-              {car.availability === 'true' ? 'available' : 'rented' }
+          <div className={className}>
+              {availability}
           </div>
         </div>
       </div>

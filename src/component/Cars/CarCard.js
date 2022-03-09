@@ -11,6 +11,14 @@ const CarCard = ({
   onFavClick,
   favourited
 }) => {
+  const { className, availability } = car.availability === "true" ? {
+    className: "cl-green",
+    availability: "available"
+  } : 
+  {
+    className: "cl-red",
+    availability: "rented"
+  }
 
   return (
     <>
@@ -35,8 +43,8 @@ const CarCard = ({
             <FvIcon car={car} favourited={favourited} onFavClick={onFavClick} />
           </div>
 
-          <div className={car.availability === 'false' ? 'cl-red' : 'cl-green'}>
-              {car.availability === 'true' ? 'available' : 'rented' }
+          <div className={className}>
+              {availability}
           </div>
         </div>
       </div>

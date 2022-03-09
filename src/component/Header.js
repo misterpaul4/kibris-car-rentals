@@ -7,15 +7,6 @@ import '../css/Header.css';
 import avatar from '../img/profileAvatar.png';
 import { logout } from '../actions';
 
-const dummyUser = [
-  {
-    'id': 1,
-    'username': 'paul',
-    'cars_uploaded': [],
-    'favourites': []
-  }
-]
-
 const Header =  ({
   authToken: auth,
   logoutUser,
@@ -25,6 +16,15 @@ const Header =  ({
   const authAction = () => {
     localStorage.clear();
     logoutUser();
+  }
+
+  const { username, authType } = auth.loggedIn ? {
+    username: auth.username,
+    authType: 'Logout'
+  } :
+  {
+    username: 'anonymous',
+    authType: 'Login'
   }
 
   return (
@@ -46,13 +46,13 @@ const Header =  ({
 
       <div className="offcanvas-body">
       <img src={avatar} className="profile-avatar mx-4" id="offcanvasExampleLabel" alt='user avatar'></img>
-      <div className=' mx-4'>@{auth.loggedIn ? auth.username : 'anonymous'}</div>
+      <div className=' mx-4'>@{username}</div>
       <ul className='mt-5 nav-list p-0'>
         <Link to='/'>
           <li className='px-4 py-2'>Home</li>
         </Link>
 
-        <Link to={`/users/${dummyUser[0].username}/cars/favourite`}>
+        <Link to={`/users/${auth.username}/cars/favourite`}>
           <li className='px-4 py-2'>Favourites</li>
         </Link>
         <li className='px-4 py-2'>Profile</li>
@@ -61,7 +61,7 @@ const Header =  ({
 
       <div className="mt-5">
         <hr></hr>
-        <Link to='/login' onClick={authAction} className=' mx-4'>{auth.loggedIn ? 'Logout' : 'Login'}</Link>
+        <Link to='/login' onClick={authAction} className=' mx-4'>{authType}</Link>
       </div>
       </div>
     </div>
@@ -70,7 +70,7 @@ const Header =  ({
         {heading}
       </h4>
 
-      <Link to={`/users/${dummyUser[0].username}/cars/favourite`}>
+      <Link to={`/users/${auth.username}/cars/favourite`}>
         <img src={favourites} alt='search icon'></img>
       </Link>
     </div>
