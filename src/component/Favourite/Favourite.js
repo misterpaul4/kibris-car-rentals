@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import '../css/App.css';
-import Header from '../component/Header';
-import Filter from '../component/Filter';
-import Cars from '../component/Cars';
-import { HOST } from '../utils/var';
-import { showAlert } from '../actions';
+import Header from '../Header';
+import Filter from '../Filter';
+import Cars from './Cars';
+import { showAlert } from '../../actions';
+import { HOST } from '../../utils/var';
 
 function App({
   authToken: auth,
@@ -14,41 +13,10 @@ function App({
   const [carList, updateCarlist] = useState(null);
 
   useEffect(() => {
-    const carsConfig = auth.loggedIn
-    ?
-    {
-      url: `${HOST}/cars_favs/${auth.username}`,
-      updateState: data => {
-        const cars = [...data.cars];
-        let carsCopy = [...data.cars];
-        // loop though each car and check if it has been favourited
-        data.favourites.forEach(id => {
-          carsCopy.every((car, index) => {
-            if (car.id === id.car_id) {
-              cars[index] = {
-                ...car,
-                faved: true,
-              }
-              // since all cars in fav
-                carsCopy.slice(index);
-              return false;
-            }
-
-            return true;
-          });
-        });
-
-        updateCarlist(cars);
-      }
-    }
-    :
-    {
-      url: `${HOST}/cars`,
-      updateState: data => updateCarlist(data),
-    }
+    const url = `${HOST}/users/${auth.username}/favourites`;
 
     const getData = () => {
-      fetch(carsConfig.url,{
+      fetch(url,{
         method: "GET",
         mode: 'cors',
         headers: {
@@ -59,7 +27,7 @@ function App({
       }).then(response => { 
         if (response.status.toString() === '200') {
           response.json().then(data => {
-            carsConfig.updateState(data);
+            updateCarlist(data);
           })
         } 
         else {
@@ -69,32 +37,24 @@ function App({
         alartUser({message: 'Looks like there was a problem. Please check your connection and try again.', positiveOutcome: false});
       });
   }
-    getData();
+
+    if (auth.loggedIn) {
+      getData();
+    } else {
+      alartUser({message: "you are not logged in", positiveOutcome: false})
+    }
 
     return null;
   }, [auth, alartUser]);
 
-  const handleFavouriteClick = (car, favourited, updateFavourite) => {
-    const favTrue = {
-      method: "DELETE",
-      requestStatus: "204",
-      successMessage: "removed from favourites",
-    };
-  
-    const favFalse = {
-      method: "POST",
-      requestStatus: "201",
-      successMessage: "added to favourites"
-    };
-    const apiRequestConfig = favourited ? favTrue : favFalse;
-
+  const handleFavouriteClick = (car, index, carsCarList, updateCarsCarlist) => {
     const credentials = {
       car_id: car.id
     };
 
     const apiFetch = async () => {
       await fetch(`${HOST}/favourites`, {
-        method: apiRequestConfig.method,
+        method: "DELETE",
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
@@ -103,10 +63,12 @@ function App({
         },
         body: JSON.stringify(credentials),
       }).then(response => {
-          if (response.status.toString() === apiRequestConfig.requestStatus) {
-            // update
-            updateFavourite(!favourited);
-            alartUser({message: apiRequestConfig.successMessage, positiveOutcome: true});
+          if (response.status.toString() === "204") {
+            // REMOVE CAR;
+            alartUser({message: "removed from favourites", positiveOutcome: true});
+            let newCarList = [...carsCarList]
+            newCarList.splice(index, 1);
+            updateCarsCarlist(newCarList);
           } else {
             response.json().then(data => {
               alartUser({message: data.errors, positiveOutcome: false});
@@ -115,7 +77,7 @@ function App({
         }).catch(error => {
           alartUser({message: "Looks like there was a problem. Please check your connection and try again.", positiveOutcome: false})
     })}
-      
+
     if (auth.loggedIn) {
       apiFetch();
     } else {
@@ -127,7 +89,7 @@ function App({
 
   return (
     <div className="App">
-      <Header heading={'Cars'} />
+      <Header heading={'Favourites'} />
       <Filter />
       <div className='d-flex justify-content-center'>
         {cars}

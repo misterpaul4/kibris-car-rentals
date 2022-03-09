@@ -52,7 +52,7 @@ const Header =  ({
           <li className='px-4 py-2'>Home</li>
         </Link>
 
-        <Link to={`/user/${dummyUser[0].id}/cars/favourites`}>
+        <Link to={`/users/${dummyUser[0].username}/cars/favourite`}>
           <li className='px-4 py-2'>Favourites</li>
         </Link>
         <li className='px-4 py-2'>Profile</li>
@@ -70,7 +70,7 @@ const Header =  ({
         {heading}
       </h4>
 
-      <Link to={`/user/${dummyUser[0].id}/cars/favourites`}>
+      <Link to={`/users/${dummyUser[0].username}/cars/favourite`}>
         <img src={favourites} alt='search icon'></img>
       </Link>
     </div>

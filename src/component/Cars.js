@@ -10,7 +10,7 @@ const Cars = ({carList, onFavClick}) => {
 
   const renderCarCard = carList.map(car => (
     <Carousel.Item className='border' key={car.id}>
-      <CarCard car={car} key={car.id} onFavClick={onFavClick} />
+      <CarCard favourited={car.faved} car={car} key={car.id} onFavClick={onFavClick} />
     </Carousel.Item> 
   ))
 

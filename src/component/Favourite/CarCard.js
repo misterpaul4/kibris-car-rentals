@@ -1,16 +1,20 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import getSymbolFromCurrency from 'currency-symbol-map';
-import { moneyWithCommas } from '../utils/util';
-import FvIcon from './FavIcon';
-import { toSnakeCase } from '../utils/util';
-import '../css/Cars.css';
+import { moneyWithCommas } from '../../utils/util';
+import favouritedIcon from '../../img/favourited.svg';
+import { toSnakeCase } from '../../utils/util';
+import '../../css/Cars.css';
 
 const CarCard = ({
   car,
   onFavClick,
-  favourited
+  index,
+  carsCarList,
+  updateCarsCarlist,
 }) => {
+
+  const handleFavRemoval = () => onFavClick(car, index, carsCarList, updateCarsCarlist);
 
   return (
     <>
@@ -32,7 +36,7 @@ const CarCard = ({
 
         <div className='d-flex justify-content-between align-items-end mt-3'>
           <div>
-            <FvIcon car={car} favourited={favourited} onFavClick={onFavClick} />
+            <img onClick={handleFavRemoval} src={favouritedIcon} className='fv-icon' alt='favourite icon'></img>
           </div>
 
           <div className={car.availability === 'false' ? 'cl-red' : 'cl-green'}>

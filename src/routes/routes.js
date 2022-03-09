@@ -5,7 +5,7 @@ import App from '../pages/App';
 import LogIn from '../pages/LogIn';
 import Signup from '../pages/Signup';
 import Car from '../pages/Car';
-import Favourite from '../pages/Favourite';
+import Favourite from '../component/Favourite/Favourite';
 import Alert from '../component/Alert';
 import PrivateRoute from './PrivateRoute';
 import '../css/index.css';
@@ -26,7 +26,7 @@ const Routes = ({
       <Route exact path="/login" component={LogIn} />
       <Route exact path="/cars/:id/:rental/:manufacturer/:model" component={Car} />
       <Route exact path="/signup" component={Signup} />
-      <PrivateRoute exact path="/user/:id/cars/favourites" component={Favourite} />
+      <PrivateRoute exact path="/users/:username/cars/favourite" component={Favourite} />
     </Switch>
   </BrowserRouter>
 )};
