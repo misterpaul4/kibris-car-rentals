@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import getSymbolFromCurrency from 'currency-symbol-map';
-import { moneyWithCommas } from '../utils/util';
+import { moneyWithCommas } from '../../utils/util';
 import FvIcon from './FavIcon';
-import { toSnakeCase } from '../utils/util';
-import '../css/Cars.css';
+import { toSnakeCase } from '../../utils/util';
+import '../../css/Cars.css';
 
 const CarCard = ({
   car,

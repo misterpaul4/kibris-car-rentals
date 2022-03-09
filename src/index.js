@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from './reducers';
-import Routes from './routes/routes';
+import Routes from './routes/Routes';
 import './css/index.css';
 
 const usernameLS = localStorage.getItem('username');

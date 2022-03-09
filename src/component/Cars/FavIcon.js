@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import favouritedIcon from '../img/favourited.svg';
-import unfavouritedIcon from '../img/unfavourited.svg';
-import '../css/Favourite.css';
+import favouritedIcon from '../../img/favourited.svg';
+import unfavouritedIcon from '../../img/unfavourited.svg';
+import '../../css/Favourite.css';
 // import { HOST } from '../utils/var';
 
 const FavIcon = ({

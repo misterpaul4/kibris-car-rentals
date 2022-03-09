@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Carousel from 'react-bootstrap/Carousel'
 import CarCard from './CarCard';
-import '../css/Cars.css';
+import '../../css/Cars.css';
 
 const Cars = ({carList, onFavClick}) => {
   const [currentCarIndex, updateCarIndex] = useState(1);

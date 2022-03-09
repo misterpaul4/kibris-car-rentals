@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import App from '../pages/App';
-import LogIn from '../pages/LogIn';
-import Signup from '../pages/Signup';
-import Car from '../pages/Car';
+import App from '../component/Cars/App';
+import LogIn from '../component/Authentication/LogIn';
+import Signup from '../component/Authentication/Signup';
+import Car from '../component/Car/Car';
 import Favourite from '../component/Favourite/Favourite';
 import Alert from '../component/Alert';
 import PrivateRoute from './PrivateRoute';

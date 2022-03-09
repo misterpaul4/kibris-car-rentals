@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import '../css/App.css';
-import Header from '../component/Header';
-import Filter from '../component/Filter';
-import Cars from '../component/Cars';
-import { HOST } from '../utils/var';
-import { showAlert } from '../actions';
+import Header from '../Header';
+import Filter from '../Filter';
+import Cars from './Cars';
+import { HOST } from '../../utils/var';
+import { showAlert } from '../../actions'
+import '../../css/App.css';
 
 function App({
   authToken: auth,

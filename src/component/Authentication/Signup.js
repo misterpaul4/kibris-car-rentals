@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link,useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { login, showAlert } from '../actions';
-import { HOST } from '../utils/var';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import {validatUsername, validatePassword} from '../utils/validate';
+import { login, showAlert } from '../../actions'
+import { HOST } from '../../utils/var';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
+import {validatUsername, validatePassword} from '../../utils/validate';
+import '../../css/Authentication.css';
 
-import '../css/Authentication.css';
-const LogIn = ({
+const Signup = ({
   loginUser,
   alartUser
 }) => {
+
   const [userUsername, updateUsername] = useState('');
   const [userPassword, updatePassword] = useState('');
   const [usernameValidation, updateUsernameValidation] = useState({
     valid: true,
     message: ''
   });
-
   const [passwordValidation, updatePasswordValidation] = useState({
     valid: true,
     message: ''
   })
+  const [userRole, updateRole] = useState('user');
 
   const history = useHistory();
 
@@ -39,9 +40,10 @@ const LogIn = ({
       const credentials = {
         username: userUsername.toLowerCase(),
         password: userPassword,
+        role: userRole,
       }
-  
-      await fetch(`${HOST}/login`, {
+
+      await fetch(`${HOST}/signup`, {
         method: "POST",
         mode: 'cors',
         headers: {
@@ -50,7 +52,7 @@ const LogIn = ({
         },
         body: JSON.stringify(credentials),
       }).then(response => {
-        if (response.status.toString() === '200') {
+        if (response.status.toString() === '201') {
           response.json().then(data => {
             localStorage.setItem('token', data.token);
             localStorage.setItem('username', data.username);
@@ -58,13 +60,13 @@ const LogIn = ({
               username: data.username,
               token: data.token
             });
-            alartUser({message: 'login successful', positiveOutcome: true})
+            alartUser({message: 'signup successful', positiveOutcome: true});
             history.push("/");
           })
         } 
         else {
           response.json().then(data => {
-            alartUser({message: data.errors + '. please try again', positiveOutcome: false})
+           alartUser({message: data.errors, positiveOutcome: false})
           })
         }
       }).catch(function(error) {
@@ -76,24 +78,44 @@ const LogIn = ({
   return (
     <div className='auth-container container-fluid text-center bg-img'>
       <div className='rounded py-5 auth'>
-        <h1>Log In</h1>
-        <p>Hello there, log in and start renting cars <span>&#128515;</span></p>
+        <h1>Create An Account</h1>
         <form>
           <input type='text' className='rounded mt-2 authInput' value={userUsername.toLowerCase()} onChange={(e) => updateUsername(e.target.value)} placeholder='username' /><br></br>
           <span className={usernameValidation.valid ? 'd-none' : 'validation-message'}><FontAwesomeIcon icon={faExclamationCircle} /> {usernameValidation.message}</span><br></br>
           <input type='password' className='rounded mt-2 authInput' value={userPassword} onChange={(e) => updatePassword(e.target.value)} placeholder='password' /><br></br>
           <span className={passwordValidation.valid ? 'd-none' : 'validation-message'}><FontAwesomeIcon icon={faExclamationCircle} /> {passwordValidation.message}</span><br></br>
-          <input type='submit' onClick={handleSubmit} value='Log In' className='rounded my-3 bg-red shadow' />
+          <div className='mt-3'>
+          <small><em>How do you intend to use this application?</em></small><br></br>
+          <div>
+            <input
+              type="radio"
+              value="user"
+              className='m-2'
+              checked={userRole === 'user'}
+              onChange={e => updateRole(e.target.value)}
+            />
+            <label>I am renting</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              value="admin"
+              className='m-2'
+              checked={userRole === 'admin'}
+              onChange={e => updateRole(e.target.value)}
+            />
+            <label>I am a registered rental company</label>
+          </div>
+          </div>
+
+
+          <input type='submit' onClick={handleSubmit} value='Sign up' className='rounded my-3 bg-red shadow' />
         </form>
 
-        <div>
-          <Link to={`/`}>Skip login</Link>
-        </div>
-
         <div className='mt-5'>
-          Don't have an account?
+          Already have an account?
           <br></br>
-          <Link to={`/signup`}>Sign up</Link>
+          <Link to={`/login`}>Log in</Link>
         </div>
       </div>
     </div>
@@ -109,4 +131,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(null, mapDispatchToProps)(LogIn);
+export default connect(null, mapDispatchToProps)(Signup);

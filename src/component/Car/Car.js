@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router'
-import { showAlert } from '../actions';
+import { showAlert } from '../../actions';
 import { connect } from 'react-redux';
-import Header from '../component/Header';
+import Header from '../Header';
 import getSymbolFromCurrency from 'currency-symbol-map';
-import avatar from '../img/avatar.png';
-import { moneyWithCommas } from '../utils/util';
-import { HOST } from '../utils/var';
+import avatar from '../../img/avatar.png';
+import { moneyWithCommas } from '../../utils/util';
+import { HOST } from '../../utils/var';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
-import '../css/Cars.css';
+import '../../css/Cars.css';
 
 const Car = ({
   authToken: auth,
