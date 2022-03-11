@@ -10,7 +10,8 @@ import '../../css/Authentication.css';
 
 const LogIn = ({
   loginUser,
-  alartUser
+  alartUser,
+  modalClass,
 }) => {
   const [userUsername, updateUsername] = useState('');
   const [userPassword, updatePassword] = useState('');
@@ -74,7 +75,7 @@ const LogIn = ({
   };
 
   return (
-    <div className='auth-container container-fluid text-center bg-img'>
+    <div className={`container-fluid text-center bg-img ${modalClass}`}>
       <div className='rounded py-5 auth'>
         <h1>Log In</h1>
         <p>Hello there, log in and start renting cars <span>&#128515;</span></p>
@@ -98,6 +99,10 @@ const LogIn = ({
       </div>
     </div>
   );
+}
+
+LogIn.defaultProps = {
+  modalClass: "auth-page auth-container"
 }
 
 const mapDispatchToProps = dispatch => ({

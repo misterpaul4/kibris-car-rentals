@@ -7,6 +7,7 @@ import Signup from '../component/Authentication/Signup';
 import Car from '../component/Car/Car';
 import Favourite from '../component/Favourite/Favourite';
 import Alert from '../component/Alert';
+import LoginModal from '../component/Authentication/LoginModal';
 import PrivateRoute from './PrivateRoute';
 import '../css/index.css';
 
@@ -21,6 +22,7 @@ const Routes = ({
     <Alert />
     : null
   }
+    <LoginModal /> 
     <Switch>
       <Route exact path="/" component={App} />
       <Route exact path="/login" component={LogIn} />

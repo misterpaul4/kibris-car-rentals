@@ -76,7 +76,7 @@ const Signup = ({
   };
 
   return (
-    <div className='auth-container container-fluid text-center bg-img'>
+    <div className='auth-container auth-page container-fluid text-center bg-img'>
       <div className='rounded py-5 auth'>
         <h1>Create An Account</h1>
         <form>

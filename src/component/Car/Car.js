@@ -168,6 +168,7 @@ const Car = ({
 
             <h2>Pricing</h2>
             <ul>
+              <li>Daily rental price: <strong>{localCurrency}{parseInt(moneyWithCommas(currentCar.daily_rental_price))}</strong></li>
               <li>3 days rental price: <strong>{localCurrency}{parseInt(moneyWithCommas(currentCar.three_day_rental_price))}</strong></li>
               <li>1 week rental price: <strong>{localCurrency}{parseInt(moneyWithCommas(currentCar.one_week_rental_price))}</strong></li>
               <li>Monthly rental price: <strong>{localCurrency}{parseInt(moneyWithCommas(currentCar.one_month_rental_price))}</strong></li>
