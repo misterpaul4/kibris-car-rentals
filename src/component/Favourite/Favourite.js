@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import Header from '../Header';
 import Filter from '../Filter';
 import Cars from './Cars';
-import { showAlert } from '../../actions';
+import { showAlert, showModal } from '../../actions';
 import { HOST } from '../../utils/var';
 
 function App({
   authToken: auth,
-  alartUser
+  alartUser,
+  showLoginModal
 }) {
   const [carList, updateCarlist] = useState(null);
 
@@ -29,7 +30,7 @@ function App({
           response.json().then(data => {
             updateCarlist(data);
           })
-        } 
+        } else if (response.status.toString() === '401') { showLoginModal(); }
         else {
           alartUser({message: 'there seems to be a problem', positiveOutcome: false});
         }
@@ -41,11 +42,11 @@ function App({
     if (auth.loggedIn) {
       getData();
     } else {
-      alartUser({message: "you are not logged in", positiveOutcome: false})
+      showLoginModal()
     }
 
     return null;
-  }, [auth, alartUser]);
+  }, [auth.loggedIn, auth.username, auth.token, alartUser, showLoginModal]);
 
   const handleFavouriteClick = (car, index, carsCarList, updateCarsCarlist) => {
     const credentials = {
@@ -85,7 +86,9 @@ function App({
     }
   };
 
-  const cars = carList ? <Cars carList={carList} onFavClick={handleFavouriteClick} /> : <span>...loading</span>
+  const reloadPage = () => window.location.reload(false);
+
+  const cars = carList ? <Cars carList={carList} onFavClick={handleFavouriteClick} /> : <span>you are not logged in, <button onClick={reloadPage} className='btn-link border-0'>reload</button></span>
 
   return (
     <div className="App">
@@ -105,7 +108,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   alartUser: status => {
     dispatch(showAlert(status));
-  }
+  },
+  showLoginModal: () => dispatch(showModal()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

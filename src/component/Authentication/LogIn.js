@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { login, showAlert } from '../../actions';
+import { login, showAlert, logout, hideModal } from '../../actions';
 import { HOST } from '../../utils/var';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +12,10 @@ const LogIn = ({
   loginUser,
   alartUser,
   modalClass,
+  logoutUser,
+  reload,
+  hideLoginModal,
+  redirect
 }) => {
   const [userUsername, updateUsername] = useState('');
   const [userPassword, updatePassword] = useState('');
@@ -41,7 +45,6 @@ const LogIn = ({
         username: userUsername.toLowerCase(),
         password: userPassword,
       }
-  
       await fetch(`${HOST}/login`, {
         method: "POST",
         mode: 'cors',
@@ -53,14 +56,13 @@ const LogIn = ({
       }).then(response => {
         if (response.status.toString() === '200') {
           response.json().then(data => {
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('username', data.username);
             loginUser({
               username: data.username,
               token: data.token
             });
             alartUser({message: 'login successful', positiveOutcome: true})
-            history.push("/");
+            if (redirect) {history.push("/");}
+            if (reload) {window.location.reload(false);}
           })
         } 
         else {
@@ -73,6 +75,10 @@ const LogIn = ({
       });
     }
   };
+
+  const handleSkip = () => {
+    logoutUser();
+  }
 
   return (
     <div className={`container-fluid text-center bg-img ${modalClass}`}>
@@ -88,13 +94,13 @@ const LogIn = ({
         </form>
 
         <div>
-          <Link to={`/`}>Skip login</Link>
+          <Link to={`/`} onClick={handleSkip}>Skip login</Link>
         </div>
 
         <div className='mt-5'>
           Don't have an account?
           <br></br>
-          <Link to={`/signup`}>Sign up</Link>
+          <Link onClick={() => hideLoginModal()} to={`/signup`}>Sign up</Link>
         </div>
       </div>
     </div>
@@ -102,15 +108,23 @@ const LogIn = ({
 }
 
 LogIn.defaultProps = {
-  modalClass: "auth-page auth-container"
+  modalClass: "auth-page auth-container",
+  reload: false,
+  redirect: true
 }
 
 const mapDispatchToProps = dispatch => ({
   loginUser: status => {
     dispatch(login(status));
   },
+  logoutUser: () => {
+    dispatch(logout());
+  },
   alartUser: status => {
     dispatch(showAlert(status));
+  },
+  hideLoginModal: () => {
+    dispatch(hideModal());
   }
 });
 

@@ -54,8 +54,6 @@ const Signup = ({
       }).then(response => {
         if (response.status.toString() === '201') {
           response.json().then(data => {
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('username', data.username);
             loginUser({
               username: data.username,
               token: data.token

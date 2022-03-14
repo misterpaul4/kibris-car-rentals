@@ -8,7 +8,6 @@ import Car from '../component/Car/Car';
 import Favourite from '../component/Favourite/Favourite';
 import Alert from '../component/Alert';
 import LoginModal from '../component/Authentication/LoginModal';
-import PrivateRoute from './PrivateRoute';
 import '../css/index.css';
 
 const Routes = ({
@@ -28,7 +27,7 @@ const Routes = ({
       <Route exact path="/login" component={LogIn} />
       <Route exact path="/cars/:id/:rental/:manufacturer/:model" component={Car} />
       <Route exact path="/signup" component={Signup} />
-      <PrivateRoute exact path="/users/:username/cars/favourite" component={Favourite} />
+      <Route exact path="/users/:username/cars/favourite" component={Favourite} />
     </Switch>
   </BrowserRouter>
 )};

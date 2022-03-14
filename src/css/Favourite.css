@@ -7,3 +7,7 @@
 .fv-icon:hover {
   cursor: pointer;
 }
+
+.btn-link {
+  background: none;
+}

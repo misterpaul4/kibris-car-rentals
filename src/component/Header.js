@@ -52,7 +52,7 @@ const Header =  ({
           <li className='px-4 py-2'>Home</li>
         </Link>
 
-        <Link to={`/users/${auth.username}/cars/favourite`}>
+        <Link to={`/users/${username}/cars/favourite`}>
           <li className='px-4 py-2'>Favourites</li>
         </Link>
         <li className='px-4 py-2'>Profile</li>

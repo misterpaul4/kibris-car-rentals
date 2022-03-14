@@ -4,12 +4,13 @@ import Header from '../Header';
 import Filter from '../Filter';
 import Cars from './Cars';
 import { HOST } from '../../utils/var';
-import { showAlert } from '../../actions'
+import { showAlert, showModal } from '../../actions'
 import '../../css/App.css';
 
 function App({
   authToken: auth,
-  alartUser
+  alartUser,
+  showLoginModal
 }) {
   const [carList, updateCarlist] = useState(null);
 
@@ -61,7 +62,9 @@ function App({
           response.json().then(data => {
             carsConfig.updateState(data);
           })
-        } 
+        } else if (response.status.toString() === '401') {
+          showLoginModal();
+        }
         else {
           alartUser({message: 'there seems to be a problem', positiveOutcome: false});
         }
@@ -72,7 +75,7 @@ function App({
     getData();
 
     return null;
-  }, [auth, alartUser]);
+  }, [auth.loggedIn, auth.username, auth.token, alartUser, showLoginModal]);
 
   const handleFavouriteClick = (car, favourited, updateFavourite) => {
     const favTrue = {
@@ -143,6 +146,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   alartUser: status => {
     dispatch(showAlert(status));
+  },
+  showLoginModal: () => {
+    dispatch(showModal());
   }
 });
 
