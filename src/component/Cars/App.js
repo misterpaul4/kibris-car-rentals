@@ -6,6 +6,7 @@ import Cars from './Cars';
 import { HOST } from '../../utils/var';
 import { showAlert, showModal } from '../../actions'
 import '../../css/App.css';
+import Loader from '../Placeholder';
 
 function App({
   authToken: auth,
@@ -122,11 +123,14 @@ function App({
     if (auth.loggedIn) {
       apiFetch();
     } else {
-      alartUser({message: "you are not logged in", positiveOutcome: false})
+      alartUser({message: "you are not logged in", positiveOutcome: false});
+      showLoginModal();
     }
   };
 
-  const cars = carList ? <Cars carList={carList} onFavClick={handleFavouriteClick} /> : <span>...loading</span>
+  const cars = carList 
+  ? <Cars carList={carList} onFavClick={handleFavouriteClick} />
+  : <Loader />
 
   return (
     <div className="App">

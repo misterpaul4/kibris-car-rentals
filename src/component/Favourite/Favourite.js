@@ -5,6 +5,7 @@ import Filter from '../Filter';
 import Cars from './Cars';
 import { showAlert, showModal } from '../../actions';
 import { HOST } from '../../utils/var';
+import Loader from '../Placeholder';
 
 function App({
   authToken: auth,
@@ -12,6 +13,7 @@ function App({
   showLoginModal
 }) {
   const [carList, updateCarlist] = useState(null);
+  const [appPhase, updateAppPhase] = useState(<Loader />)
 
   useEffect(() => {
     const url = `${HOST}/users/${auth.username}/favourites`;
@@ -25,7 +27,7 @@ function App({
           Accept: 'application/json',
           Authorization: auth.token
         }
-      }).then(response => { 
+      }).then(response => {
         if (response.status.toString() === '200') {
           response.json().then(data => {
             updateCarlist(data);
@@ -42,7 +44,8 @@ function App({
     if (auth.loggedIn) {
       getData();
     } else {
-      showLoginModal()
+      showLoginModal();
+      updateAppPhase(<span>you are not logged in, <button onClick={reloadPage} className='btn-link border-0'>reload</button></span>)
     }
 
     return null;
@@ -88,7 +91,9 @@ function App({
 
   const reloadPage = () => window.location.reload(false);
 
-  const cars = carList ? <Cars carList={carList} onFavClick={handleFavouriteClick} /> : <span>you are not logged in, <button onClick={reloadPage} className='btn-link border-0'>reload</button></span>
+  const cars = carList
+  ? <Cars carList={carList} onFavClick={handleFavouriteClick} />
+  : appPhase
 
   return (
     <div className="App">

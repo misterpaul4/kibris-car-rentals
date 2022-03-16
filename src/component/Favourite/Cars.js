@@ -22,15 +22,23 @@ const Cars = ({carList, onFavClick}) => {
     </Carousel.Item> 
   ));
 
+  const renderComponent = carsCarList.length === 0 
+  ?
+  <div className='text-center'>favourite list is currently empty</div>
+  :
+  <>
+    <Carousel interval={null} indicators={false} activeIndex={currentCarIndex} className='p-3' onSelect={onCarouselSlide}>
+      {renderCarCard}
+    </Carousel>
+
+    <div className='text-center m-3'>
+      {currentCarIndex + 1} / {carsCarList && carsCarList.length}
+    </div>
+  </>
+
   return (
     <div className='cars-container'>
-      <Carousel interval={null} indicators={false} activeIndex={currentCarIndex} className='p-3' onSelect={onCarouselSlide}>
-        {renderCarCard}
-      </Carousel>
-
-      <div className='text-center m-3'>
-        {currentCarIndex + 1} / {carsCarList && carsCarList.length}
-      </div>
+      {renderComponent}
     </div>
   );
 }

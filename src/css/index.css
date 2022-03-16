@@ -59,3 +59,11 @@ h2, h3, h4 {
   font-size: 1.1rem;
   font-weight: bold;
 }
+
+.lg-height {
+  height: 370px;
+}
+
+.loader-bg {
+  background-color: #f1f1f1;
+}
