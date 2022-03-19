@@ -78,58 +78,8 @@ function App({
     return null;
   }, [auth.loggedIn, auth.username, auth.token, alartUser, showLoginModal]);
 
-  const handleFavouriteClick = (car, favourited, updateFavourite) => {
-    const favTrue = {
-      method: "DELETE",
-      requestStatus: "204",
-      successMessage: "removed from favourites",
-    };
-  
-    const favFalse = {
-      method: "POST",
-      requestStatus: "201",
-      successMessage: "added to favourites"
-    };
-    const apiRequestConfig = favourited ? favTrue : favFalse;
-
-    const credentials = {
-      car_id: car.id
-    };
-
-    const apiFetch = async () => {
-      await fetch(`${HOST}/favourites`, {
-        method: apiRequestConfig.method,
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          Authorization: auth.token,
-        },
-        body: JSON.stringify(credentials),
-      }).then(response => {
-          if (response.status.toString() === apiRequestConfig.requestStatus) {
-            // update
-            updateFavourite(!favourited);
-            alartUser({message: apiRequestConfig.successMessage, positiveOutcome: true});
-          } else {
-            response.json().then(data => {
-              alartUser({message: data.errors, positiveOutcome: false});
-            });
-          }
-        }).catch(error => {
-          alartUser({message: "Looks like there was a problem. Please check your connection and try again.", positiveOutcome: false})
-    })}
-      
-    if (auth.loggedIn) {
-      apiFetch();
-    } else {
-      alartUser({message: "you are not logged in", positiveOutcome: false});
-      showLoginModal();
-    }
-  };
-
   const cars = carList 
-  ? <Cars carList={carList} onFavClick={handleFavouriteClick} />
+  ? <Cars carList={carList} />
   : <Loader />
 
   return (

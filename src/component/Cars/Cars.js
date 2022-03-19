@@ -3,14 +3,14 @@ import Carousel from 'react-bootstrap/Carousel'
 import CarCard from './CarCard';
 import '../../css/Cars.css';
 
-const Cars = ({carList, onFavClick}) => {
+const Cars = ({carList}) => {
   const [currentCarIndex, updateCarIndex] = useState(1);
 
   const onCarouselSlide = index => updateCarIndex(index + 1);
 
   const renderCarCard = carList.map(car => (
     <Carousel.Item className='border' key={car.id}>
-      <CarCard favourited={car.faved} car={car} key={car.id} onFavClick={onFavClick} />
+      <CarCard favourited={car.faved} car={car} key={car.id} />
     </Carousel.Item> 
   ))
 

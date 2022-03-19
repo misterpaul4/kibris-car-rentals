@@ -2,13 +2,12 @@ import React from "react";
 import { Link } from 'react-router-dom';
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { moneyWithCommas } from '../../utils/util';
-import FvIcon from './FavIcon';
+import FvIcon from '../FavIcon';
 import { toSnakeCase } from '../../utils/util';
 import '../../css/Cars.css';
 
 const CarCard = ({
   car,
-  onFavClick,
   favourited
 }) => {
   const { className, availability } = car.availability === "true" ? {
@@ -40,7 +39,7 @@ const CarCard = ({
 
         <div className='d-flex justify-content-between align-items-end mt-3'>
           <div>
-            <FvIcon car={car} favourited={favourited} onFavClick={onFavClick} />
+            <FvIcon car={car} favourited={favourited} />
           </div>
 
           <div className={className}>
