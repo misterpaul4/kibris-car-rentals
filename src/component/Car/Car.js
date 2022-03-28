@@ -8,13 +8,14 @@ import { moneyWithCommas } from '../../utils/util';
 import { HOST } from '../../utils/var';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons';
+import Placeholder  from '../Placeholder';
 import FavIcon from '../FavIcon';
 import '../../css/Cars.css';
 
 const Car = ({
   authToken: auth,
   alartUser,
-  showLoginModal
+  showLoginModal,
 }) => {
 
   const [currentCar, updateCurrentCar] = useState(null);
@@ -29,7 +30,6 @@ const Car = ({
   let { id } = useParams();
 
   useEffect(() => {
-    console.log("component mounted");
     const carConfig = auth.loggedIn
     ? {
       url: `${HOST}/cars/${id}/fav`,
@@ -66,18 +66,18 @@ const Car = ({
           const isWaiting = carConfig.waitingList(data);
           const presets = car.availability === "false"
           ? {
-            actionBtnColor: 'rent-btn-container text-center p-2 mt-2 align-self-center bg-red',
+            actionBtnColor: 'bg-red',
             actionBtnText: 'rented',
             disableBtn: true,
           }
           : () => isWaiting
             ? {
-              actionBtnColor: 'bg-warning rent-btn-container text-center p-2 mt-2 align-self-center',
+              actionBtnColor: 'bg-warning',
               actionBtnText: 'pending approval',
               disableBtn: true,
             }
             : {
-              actionBtnColor: 'rent-btn-container text-center p-2 mt-2 align-self-center bg-green',
+              actionBtnColor: 'bg-green',
               actionBtnText: 'apply to rent',
               disableBtn: false,
             }
@@ -90,7 +90,7 @@ const Car = ({
         else {
           alartUser({message: 'Looks like there was a problem. Please try again', positiveOutcome: false})
         }
-      }).catch(function(error) {
+      }).catch(function() {
         alartUser({message: 'Looks like there was a problem. Please check your connection and try again.', positiveOutcome: false})
       });
     }
@@ -142,7 +142,6 @@ const Car = ({
     } else {
       // display login modal
       showLoginModal();
-      
     }
   }
 
@@ -152,7 +151,7 @@ const Car = ({
         currentCar
         ?
         <>
-          <div className='car-page--child-container'>
+          <div className='car-page-child-container'>
             <Header heading={currentCar.rental_company} />
             <div className='d-flex flex-column align-items-center car-page'>
               {/* car image */}
@@ -212,23 +211,25 @@ const Car = ({
                   </> :
                   null
                 }
+
+              <button disabled={actionBtnPresets.disableBtn} onClick={actionBtn} className={`rent-btn-container p-2 my-2 ${actionBtnPresets.actionBtnColor}`}>
+              {actionBtnPresets.actionBtnText}
+              </button>
               </div>
             </div>
           </div>
-
-          <button disabled={actionBtnPresets.disableBtn} onClick={actionBtn} className={actionBtnPresets.actionBtnColor}>
-            {actionBtnPresets.actionBtnText}
-          </button>
         </>
         :
-        <p className='text-center mt-5'>...loading</p>
+        <div>
+          <Placeholder />
+        </div>
       }
     </div>
   );
 }
 
 const mapStateToProps = state => ({
-  authToken: state.auth
+  authToken: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({

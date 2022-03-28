@@ -29,8 +29,7 @@
 
 .cars-container,
 .car-page-container .car-img,
-.car-page-container .car-details,
-.car-page-container .rent-btn-container
+.car-page-container .car-details
 {
   width: 100%;
   max-width: 576px;
@@ -63,7 +62,7 @@
   border: none;
 }
 
-.car-page--child-container {
+.car-page-child-container {
   overflow: scroll;
 }
 

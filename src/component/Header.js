@@ -55,8 +55,8 @@ const Header =  ({
         <Link to={`/users/${username}/cars/favourite`}>
           <li className='px-4 py-2'>Favourites</li>
         </Link>
-        <li className='px-4 py-2'>Profile</li>
-        <li className='px-4 py-2'>Settings</li>
+        {/* <li className='px-4 py-2'>Profile</li>
+        <li className='px-4 py-2'>Settings</li> */}
       </ul>
 
       <div className="mt-5">
