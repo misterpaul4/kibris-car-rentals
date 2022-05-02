@@ -5,27 +5,47 @@ import { login, showAlert } from '../../actions'
 import { HOST } from '../../utils/var';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
-import {validatUsername, validatePassword} from '../../utils/validate';
+import {validatUsername, validatePassword, validateNonEmpty} from '../../utils/validate';
 import '../../css/Authentication.css';
 
 const Signup = ({
   loginUser,
   alartUser
 }) => {
+  const validationDefault = {
+    valid: true,
+    message:'',
+  }
 
   const [userUsername, updateUsername] = useState('');
   const [userPassword, updatePassword] = useState('');
-  const [usernameValidation, updateUsernameValidation] = useState({
-    valid: true,
-    message: ''
-  });
-  const [passwordValidation, updatePasswordValidation] = useState({
-    valid: true,
-    message: ''
-  })
+
+  const [company, updateCompanyName] = useState('');
+
+  const [usernameValidation, updateUsernameValidation] = useState(validationDefault);
+  const [passwordValidation, updatePasswordValidation] = useState(validationDefault)
+  const [companyNameValidation, updateCompanyNameValidation] = useState(validationDefault)
   const [userRole, updateRole] = useState('user');
 
   const history = useHistory();
+
+
+  const userRoleSelected = userRole === 'admin' ? {
+    companyField:
+    <>
+      <input type='text' className='rounded mt-2 authInput' value={company} onChange={(e) => updateCompanyName(e.target.value)} placeholder='company name' /><br></br>
+
+      <span className={companyNameValidation.valid ? 'd-none' : 'validation-message'}><FontAwesomeIcon icon={faExclamationCircle} /> {companyNameValidation.message}</span><br></br>
+    </>,
+    compValidation: () => {
+      const validatedCompanyName = validateNonEmpty(company);
+      updateCompanyNameValidation(validatedCompanyName);
+    }
+  } :
+  {
+    companyField: null,
+    compValidation: () => null
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,11 +56,15 @@ const Signup = ({
     updateUsernameValidation(validatedUsername);
     updatePasswordValidation(validatedPassword);
 
+    userRoleSelected.compValidation();
+
+
     if (validatedUsername.valid && validatedPassword.valid) {
       const credentials = {
         username: userUsername.toLowerCase(),
         password: userPassword,
         role: userRole,
+        company_name: company,
       }
 
       await fetch(`${HOST}/signup`, {
@@ -80,6 +104,7 @@ const Signup = ({
         <form>
           <input type='text' className='rounded mt-2 authInput' value={userUsername.toLowerCase()} onChange={(e) => updateUsername(e.target.value)} placeholder='username' /><br></br>
           <span className={usernameValidation.valid ? 'd-none' : 'validation-message'}><FontAwesomeIcon icon={faExclamationCircle} /> {usernameValidation.message}</span><br></br>
+          
           <input type='password' className='rounded mt-2 authInput' value={userPassword} onChange={(e) => updatePassword(e.target.value)} placeholder='password' /><br></br>
           <span className={passwordValidation.valid ? 'd-none' : 'validation-message'}><FontAwesomeIcon icon={faExclamationCircle} /> {passwordValidation.message}</span><br></br>
           <div className='mt-3'>
@@ -104,6 +129,8 @@ const Signup = ({
             />
             <label>I am a registered rental company</label>
           </div>
+
+          {userRoleSelected.companyField}
           </div>
 
 

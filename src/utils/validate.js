@@ -40,7 +40,22 @@ const validatePassword = password => {
   }
 }
 
+const validateNonEmpty = str => {
+  if (str.length < 1) {
+    return {
+      valid: false,
+      message: 'company name must be specified'
+    }
+  } else {
+    return {
+      valid: true,
+      message: ''
+    }
+  }
+}
+
 export {
   validatUsername,
-  validatePassword
+  validatePassword,
+  validateNonEmpty
 };
