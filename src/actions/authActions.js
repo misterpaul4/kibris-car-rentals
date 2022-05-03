@@ -1,7 +1,8 @@
-const login = ({username, token}) => ({
+const login = ({username, token, company}) => ({
   type: 'LOGIN',
   username,
-  token
+  token,
+  company,
 });
 
 const showModal = () => ({

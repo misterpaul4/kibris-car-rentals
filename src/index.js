@@ -7,17 +7,20 @@ import Routes from './routes/Routes';
 import './css/index.css';
 
 const usernameLS = localStorage.getItem('username');
+const companyLS = localStorage.getItem('company');
 const tokenLS = localStorage.getItem('token');
 
 const storeConfig = tokenLS ? {
   loggedIn: true,
   token: tokenLS,
-  username: usernameLS
+  username: usernameLS,
+  company: companyLS
 } : 
 {
   loggedIn: false,
   token: '',
-  username: ''
+  username: '',
+  company: ''
 }
 
 const store = createStore(
@@ -27,6 +30,7 @@ const store = createStore(
       loggedIn: storeConfig.loggedIn,
       token: storeConfig.token ,
       username: storeConfig.username,
+      company: storeConfig.company,
       revealModal: false,
     },
     alart: {

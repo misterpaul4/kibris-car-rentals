@@ -80,7 +80,8 @@ const Signup = ({
           response.json().then(data => {
             loginUser({
               username: data.username,
-              token: data.token
+              token: data.token,
+              company: data.company_name
             });
             alartUser({message: 'signup successful', positiveOutcome: true});
             history.push("/");

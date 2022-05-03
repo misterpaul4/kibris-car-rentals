@@ -3,11 +3,13 @@ const authReducer = (state = [], action) => {
     case 'LOGIN':
       localStorage.setItem('token', action.token);
       localStorage.setItem('username', action.username);
+      localStorage.setItem('company', action.company);
       return {
         ...state,
         loggedIn: true,
         token: action.token,
         username: action.username,
+        company: action.company,
         revealModal: false,
       };
 
@@ -31,6 +33,7 @@ const authReducer = (state = [], action) => {
         loggedIn: false,
         token: "",
         username: "",
+        company: "",
         revealModal: false,
       };
 
