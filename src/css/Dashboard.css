@@ -1,0 +1,9 @@
+.dashboard-img-1 {
+  width: auto;
+  height: 100px;
+}
+
+.dashboard-table td,
+.dashboard-table th {
+  vertical-align: middle;
+}

@@ -58,7 +58,8 @@ const LogIn = ({
           response.json().then(data => {
             loginUser({
               username: data.username,
-              token: data.token
+              token: data.token,
+              company: data.company_name
             });
             alartUser({message: 'login successful', positiveOutcome: true})
             if (redirect) {history.push("/");}

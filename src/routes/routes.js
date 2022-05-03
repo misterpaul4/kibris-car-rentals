@@ -8,6 +8,7 @@ import Car from '../component/Car/Car';
 import Favourite from '../component/Favourite/Favourite';
 import Alert from '../component/Alert';
 import LoginModal from '../component/Authentication/LoginModal';
+import AdminDashboard from '../component/Dashboard/Admin';
 import '../css/index.css';
 
 const Routes = ({
@@ -28,6 +29,7 @@ const Routes = ({
       <Route exact path="/cars/:id/:rental/:manufacturer/:model" component={Car} />
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/users/:username/cars/favourite" component={Favourite} />
+      <Route exact path="/dashboard_admin" component={AdminDashboard} />
     </Switch>
   </BrowserRouter>
 )};
