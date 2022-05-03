@@ -1,0 +1,13 @@
+.fv-icon {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+}
+
+.fv-icon:hover {
+  cursor: pointer;
+}
+
+.btn-link {
+  background: none;
+}

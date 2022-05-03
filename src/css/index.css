@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish&display=swap');
+
+body {
+  font-family: 'Mulish', sans-serif;
+}
+
+.bg-img {
+  /* background-size: cover;
+  background-repeat: no-repeat; */
+  background: no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.bg-red {
+  background-color: #ec6132;
+}
+
+.bg-green {
+  background-color: #00d792;
+}
+
+.cl-red {
+  color: #ec6132;
+}
+
+.cl-green {
+  color: #00d792;
+}
+
+header {
+  background-color: white;
+}
+
+.shadow {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(236, 97, 50, 0.6) !important;
+}
+
+ul {
+  list-style: none;
+}
+
+.car-details ul li::before {
+  content: "\2022";
+  color: #ec6132;
+  font-weight: bold;
+  display: inline-block; 
+  width: 1em;
+  margin-left: -1em;
+}
+
+h1 {
+  font-size: 1.3rem;
+}
+
+h2, h3, h4 {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.lg-height {
+  height: 370px;
+}
+
+.loader-bg {
+  background-color: #f1f1f1;
+}
+
+.underlined {
+  text-decoration: underline;
+}

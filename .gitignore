@@ -11,6 +11,11 @@
 # production
 /build
 
+#TODO
+TODO.txt
+
+temp.js
+
 # misc
 .DS_Store
 .env.local

@@ -1,0 +1,73 @@
+.car-details {
+  background-color: white;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.carousel .carousel-control-prev,
+.carousel .carousel-control-next {
+  margin: 1em 0 7em 0;
+}
+
+.carousel .carousel-control-next:hover {
+  /* cursor: e-resize; */
+  background-color: rgba(204, 206, 218, 0.12);
+}
+
+.carousel .carousel-control-prev:hover {
+  /* cursor: w-resize; */
+  background-color: rgba(204, 206, 218, 0.12);
+}
+
+.car-img {
+  height: 50vh;
+}
+
+.car-page-container {
+  height: 100vh;
+}
+
+.cars-container,
+.car-page-container .car-img,
+.car-page-container .car-details
+{
+  width: 100%;
+  max-width: 576px;
+}
+
+.car-page-container .car-img {
+  position: relative;
+}
+
+.car-page-container .car-img .bg-float {
+  position: absolute;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(26,33,64, 0.12), rgba(81,84,115, 0.33));
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;  
+  color: white;
+}
+
+.rental-company-AV {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.car-details-pricing {
+  line-height: 1.3rem;
+}
+
+.rent-btn-container {
+  color: white;
+  border: none;
+}
+
+.car-page-child-container {
+  overflow: scroll;
+}
+
+.upload-date {
+  font-style: italic;
+  font-size: 0.8rem;
+  color: gray;
+}
